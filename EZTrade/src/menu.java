@@ -1,3 +1,6 @@
+import java.io.*;
+import java.net.*;
+import javax.swing.*;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -29,6 +32,7 @@ public class menu extends javax.swing.JFrame {
         txtStockInput = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         lblErrorMessage = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -39,11 +43,17 @@ public class menu extends javax.swing.JFrame {
         lblStockInput.setText("Enter a Stock Symbol:");
 
         txtStockInput.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtStockInput.setText("jTextField1");
 
         btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         lblErrorMessage.setText("Error Message");
+
+        jButton1.setText("Exit");
 
         jMenu1.setText("TBD");
         menuBar.add(jMenu1);
@@ -60,15 +70,18 @@ public class menu extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(91, 91, 91)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lblStockInput)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(103, 103, 103)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(lblErrorMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtStockInput, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(lblStockInput)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(103, 103, 103)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lblErrorMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtStockInput, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))))
                 .addGap(127, 127, 127))
         );
         layout.setVerticalGroup(
@@ -82,11 +95,27 @@ public class menu extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSearch)
                     .addComponent(lblErrorMessage))
-                .addContainerGap(210, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(169, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        String apiKey = "G2BDTT8KOTNFRFW0";
+        menu_class stockDataRetriever = new menu_class(apiKey);
+
+        String stockSymbol = txtStockInput.getText();
+        boolean success = stockDataRetriever.retrieveStockData(stockSymbol);
+
+        if (!success) {
+            lblErrorMessage.setText("Error retrieving stock data. Please check the symbol.");
+        } else {
+            lblErrorMessage.setText("");
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -125,6 +154,7 @@ public class menu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
+    private javax.swing.JButton jButton1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JLabel lblErrorMessage;
