@@ -54,6 +54,11 @@ public class menu extends javax.swing.JFrame {
         lblErrorMessage.setText("Error Message");
 
         jButton1.setText("Exit");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("TBD");
         menuBar.add(jMenu1);
@@ -104,18 +109,28 @@ public class menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String apiKey = "G2BDTT8KOTNFRFW0";
+        String apiKey = "H4CTFTLF7A5N7CLW";
         menu_class stockDataRetriever = new menu_class(apiKey);
 
         String stockSymbol = txtStockInput.getText();
-        boolean success = stockDataRetriever.retrieveStockData(stockSymbol);
 
-        if (!success) {
-            lblErrorMessage.setText("Error retrieving stock data. Please check the symbol.");
+        String validationMessage = stockDataRetriever.isValidStockSymbol(stockSymbol);
+        if (validationMessage != null) {
+            lblErrorMessage.setText(validationMessage);
         } else {
-            lblErrorMessage.setText("");
+            String retrievalMessage = stockDataRetriever.retrieveStockData(stockSymbol);
+            if (retrievalMessage != null) {
+                lblErrorMessage.setText(retrievalMessage);
+            } else {
+                lblErrorMessage.setText(""); // Clear any previous error messages
+                // Additional code for handling successful data retrieval
+            }
         }
     }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -1,6 +1,8 @@
-import java.io.*;
-import java.net.*;
-import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -17,7 +19,21 @@ public class menu_class {
         this.apiKey = apiKey;
     }
 
-    public boolean retrieveStockData(String stockSymbol) {
+    public String isValidStockSymbol(String stockSymbol) {
+        if (stockSymbol == null || stockSymbol.trim().isEmpty()) {
+            return "Invalid stock symbol. Please check your input.";
+        }
+        return null; // Indicates valid stock symbol
+    }
+
+    public String retrieveStockData(String stockSymbol) {
+        String validationMessage = isValidStockSymbol(stockSymbol);
+        if (validationMessage != null) {
+            // Write the validation error message to the JSON file
+            writeResponseToFile("stock.json", validationMessage);
+            return validationMessage; // Return validation error message
+        }
+
         try {
             String apiUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + stockSymbol + "&interval=5min&apikey=" + apiKey;
             URL url = new URL(apiUrl);
@@ -40,15 +56,24 @@ public class menu_class {
                 // Write the JSON response to the stock.json file, overwriting existing content
                 writeResponseToFile("stock.json", response.toString());
 
-                System.out.println("Stock data written to file: stock.json");
-                return true;
+                // Check if the response contains an error message
+                if (response.toString().contains("\"Error Message\"")) {
+                    return "Error: Symbol not recognized by the API";
+                }
+
+                return null; // Indicates successful retrieval
             } else {
-                System.out.println("Error: " + responseCode);
-                return false;
+                String errorMessage = "Error: " + responseCode;
+                // Write the error message to the JSON file
+                writeResponseToFile("stock.json", errorMessage);
+                return errorMessage; // Return error message
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            String errorMessage = "Error retrieving stock data. Please try again.";
+            // Write the error message to the JSON file
+            writeResponseToFile("stock.json", errorMessage);
+            return errorMessage; // Return error message
         }
     }
 
