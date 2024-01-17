@@ -173,28 +173,77 @@ public class signup extends javax.swing.JFrame {
         int cardNum;
         int phoneNum;
         int cvc;
-        int expiry;
+        String expiry;
         username = usernameField.getText();
         password = passwordField.getText();
+        expiry = expiryField.getText();
         try {
             cardNum = Integer.parseInt(cardNumberField.getText());
         } catch (NumberFormatException e) {
             errorField.setText("Credit/Debit Card must only contain numbers.");
+            return;
         }
         try {
             phoneNum = Integer.parseInt(phoneField.getText());
         } catch (NumberFormatException e) {
-            errorField.setText("Provided phone number is not valid");
+            errorField.setText("Provided phone number must only contain numbers");
+            return;
         }
+        try {
+            cvc = Integer.parseInt(cvcField.getText());
+        } catch (NumberFormatException e) {
+            errorField.setText("CVC must only contain numbers");
+            return;
+        }
+        if (username.contains(" ")){
+            errorField.setText("Username cannot contain spaces");
+            return;
+        }
+        if (!isPasswordEffective(password)){
+            errorField.setText("Must contain at least 8 characters, no spaces, one capital letter, and one special character");
+            return;
+        }
+        
     }//GEN-LAST:event_confirmButtonActionPerformed
 
     private void phoneFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_phoneFieldActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private static boolean isPasswordEffective(String password) {
+        // Check for at least 8 characters
+        if (password.length() < 8) {
+            return false;
+        }
+        
+        if (password.contains(" ")){
+            return false;
+        }
+
+        // Check for at least 1 capital letter
+        boolean hasUpperCase = false;
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                hasUpperCase = true;
+                break;
+            }
+        }
+        if (!hasUpperCase) {
+            return false;
+        }
+
+        // Check for at least 1 special character
+        String specialCharacters = ".!?!_-\\|$@&*";
+        boolean hasSpecialCharacter = false;
+        for (char c : password.toCharArray()) {
+            if (specialCharacters.contains(String.valueOf(c))) {
+                hasSpecialCharacter = true;
+                break;
+            }
+        }
+        return hasSpecialCharacter;
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
