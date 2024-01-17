@@ -198,10 +198,13 @@ public class signup extends javax.swing.JFrame {
         }
         if (cvcString.length() != 3){
             errorField.setText("CVC must be a valid length");
+            return;
         }
         if (!isValidCardNumber(Integer.toString(cardNum))){
             errorField.setText("Credit/debit card number is invalid");
+            return;
         }
+        errorField.setText("Account created successfully");
         
     }//GEN-LAST:event_confirmButtonActionPerformed
 
