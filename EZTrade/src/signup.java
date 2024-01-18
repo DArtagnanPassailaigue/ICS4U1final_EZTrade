@@ -1,3 +1,6 @@
+import java.text.*;
+import java.util.*;
+
 public class signup extends javax.swing.JFrame {
 
     public signup() {
@@ -68,47 +71,46 @@ public class signup extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addComponent(errorField, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel5)
+                            .addGap(18, 18, 18)
+                            .addComponent(cvcField, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jLabel6)
+                            .addGap(18, 18, 18)
+                            .addComponent(expiryField))
+                        .addGroup(layout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addGap(21, 21, 21))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(passwordField)
+                                .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel7))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(cardNumberField)
+                                .addComponent(phoneField, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(cvcField, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(expiryField))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(21, 21, 21))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(passwordField)
-                                    .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel7))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cardNumberField)
-                                    .addComponent(phoneField, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(141, 141, 141)
+                        .addGap(70, 70, 70)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(147, 147, 147)
+                        .addGap(76, 76, 76)
                         .addComponent(confirmButton, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(errorField)
+                .addGap(127, 127, 127))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,21 +155,21 @@ public class signup extends javax.swing.JFrame {
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
         String username;
         String password;
-        int cardNum;
-        int phoneNum;
+        long cardNum;
+        long phoneNum;
         int cvc;
         String expiry;
         username = usernameField.getText();
         password = passwordField.getText();
         expiry = expiryField.getText();
         try {
-            cardNum = Integer.parseInt(cardNumberField.getText());
+            cardNum = Long.parseLong(cardNumberField.getText());
         } catch (NumberFormatException e) {
             errorField.setText("Credit/Debit Card must only contain numbers.");
             return;
         }
         try {
-            phoneNum = Integer.parseInt(phoneField.getText());
+            phoneNum = Long.parseLong(phoneField.getText());
         } catch (NumberFormatException e) {
             errorField.setText("Provided phone number must only contain numbers");
             return;
@@ -186,11 +188,11 @@ public class signup extends javax.swing.JFrame {
             errorField.setText("Must contain at least 8 characters, no spaces, one capital letter, and one special character");
             return;
         }
-        if (!expiry.matches( "\\d{4}/\\d{2}/\\d{2}") || expiry.contains(".*[a-zA-Z].*")){
-            errorField.setText("Expiry date must be in YYYY/MM/DD format");
+        if (!expiry.matches( "\\d{2}/\\d{2}") || expiry.contains(".*[a-zA-Z].*") || !isValidExpiryDate(expiry)){
+            errorField.setText("Expiry date must be a real date in MM/YY format, and card must not be expired");
             return;
         }
-        String phoneNumString = Integer.toString(phoneNum);
+        String phoneNumString = Long.toString(phoneNum);
         String cvcString = Integer.toString(cvc);
         if (phoneNumString.length() != 10){
             errorField.setText("Phone number must be a valid length");
@@ -200,12 +202,12 @@ public class signup extends javax.swing.JFrame {
             errorField.setText("CVC must be a valid length");
             return;
         }
-        if (!isValidCardNumber(Integer.toString(cardNum))){
+        if (!isValidCardNumber(Long.toString(cardNum))){
             errorField.setText("Credit/debit card number is invalid");
             return;
         }
         errorField.setText("Account created successfully");
-        
+        // write the integration of adding the collected info to the csv file here
     }//GEN-LAST:event_confirmButtonActionPerformed
 
     private void phoneFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneFieldActionPerformed
@@ -276,6 +278,30 @@ public class signup extends javax.swing.JFrame {
 
         // The credit card number is valid if the sum is a multiple of 10
         return sum % 10 == 0;
+    }
+    
+    public static boolean isValidExpiryDate(String expiryDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/yy");
+        dateFormat.setLenient(false);
+
+        try {
+            // Parse the date, and if successful, consider it a valid date
+            Date parsedDate = dateFormat.parse(expiryDate);
+            
+            // Check if the expiry date is before the year 2024
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(parsedDate);
+            int expiryYear = cal.get(Calendar.YEAR);
+
+            if (expiryYear < 2024) {
+                return false; // Deny expiry dates before the year 2024
+            }
+            
+            return true;
+        } catch (ParseException e) {
+            // If parsing fails, it's not a valid date
+            return false;
+        }
     }
     
     public static void main(String args[]) {
