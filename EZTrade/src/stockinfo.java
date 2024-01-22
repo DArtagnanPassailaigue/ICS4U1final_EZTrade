@@ -170,7 +170,10 @@ public class stockinfo extends javax.swing.JFrame {
         double stockCost = 0; // pull the stock cost from the stock file
         double accountHoldings = 0; // pull the account holdings from the user account file
         int ownedStockAmount = 0; // pull the amount of the given stock owned by the user from the user account file
+        String stockKey = "";
         double sellTotal = stockCost * ownedStockAmount;
+        double newAH = accountHoldings + sellTotal;
+        errorField.setText("Shares sold successfully, " + stockKey + " removed from owned stocks");
     }//GEN-LAST:event_sellButtonActionPerformed
 
     public static void main(String args[]) {
