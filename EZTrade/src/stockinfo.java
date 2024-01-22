@@ -167,9 +167,10 @@ public class stockinfo extends javax.swing.JFrame {
     }//GEN-LAST:event_favouriteButtonActionPerformed
 
     private void sellButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellButtonActionPerformed
-        double stockCost = 0;
-        double accountHoldings = 0;
-        
+        double stockCost = 0; // pull the stock cost from the stock file
+        double accountHoldings = 0; // pull the account holdings from the user account file
+        int ownedStockAmount = 0; // pull the amount of the given stock owned by the user from the user account file
+        double sellTotal = stockCost * ownedStockAmount;
     }//GEN-LAST:event_sellButtonActionPerformed
 
     public static void main(String args[]) {
