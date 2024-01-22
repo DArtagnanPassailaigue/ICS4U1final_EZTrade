@@ -187,7 +187,7 @@ public class login extends javax.swing.JFrame {
         String username = txtUsername.getText().trim();
         String password = txtPassword.getText().trim();
 
-        String filePath = "accounts.csv"; // Replace with the actual file path
+        String filePath = "accounts.csv"; // Replace with the actual file path a
         if (login_class.login(username, password, filePath)) {
             JOptionPane.showMessageDialog(this, "Login successful!");
         } else {
