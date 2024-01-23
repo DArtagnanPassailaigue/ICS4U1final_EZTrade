@@ -181,6 +181,47 @@ public class favouriteowned extends javax.swing.JFrame {
         */
     }//GEN-LAST:event_backButtonActionPerformed
 
+    /*
+    add
+        double toAdd;
+        double currentFunds = 0; // get this from the file
+        try {
+            toAdd = Double.parseDouble(addField.getText());
+        } catch (NumberFormatException e){
+            errorField.setText("Please enter a valid numerical amount");
+            return;
+        }
+        if (toAdd < 0){
+            errorField.setText("Please enter a positive amount of money to add to your account");
+            return;
+        }
+        double added = toAdd + currentFunds;
+        // set the user's money in account to "added"
+        errorField.setText("$" + Double.toString(toAdd) + " pending onto your account, bank contacted");
+    
+    claim
+        double accountHoldings = 0; // get this from user file
+        double claimed = accountHoldings;
+        if (claimed == 0){
+            errorField.setText("There is no money in your account to claim");
+        }
+        double finalClaimed = claimed * 0.985;
+        double stolen = claimed * 0.015;
+        errorField.setText("$" + finalClaimed + " added to your bank account, $" + stolen + " subtracted as payment. Thank you for choosing EZTrade!");
+        double newAcc = 0;
+        // set the user's balance to newAcc;
+    
+    back
+        /*
+        menu m = new menu();
+        m.setVisible((true));
+        this.dispose();
+        */
+    
+    
+    
+    
+    
     /**
      * @param args the command line arguments
      */
