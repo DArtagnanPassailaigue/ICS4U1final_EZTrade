@@ -47,7 +47,7 @@ public class login extends javax.swing.JFrame {
 
         panelTitle.setBackground(new java.awt.Color(99, 136, 137));
 
-        lblLogo.setIcon(new javax.swing.ImageIcon("C:\\Users\\rohan\\Downloads\\log0 150x150.jpg")); // NOI18N
+        lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/log0 150x150.jpg"))); // NOI18N
 
         lblTitle.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
         lblTitle.setForeground(new java.awt.Color(249, 239, 219));
@@ -83,7 +83,7 @@ public class login extends javax.swing.JFrame {
                 .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblDescription)
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panelForm.setBackground(new java.awt.Color(249, 239, 219));
