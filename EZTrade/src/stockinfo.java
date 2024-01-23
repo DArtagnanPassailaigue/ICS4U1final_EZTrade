@@ -25,157 +25,211 @@ public class stockinfo extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        backButton = new javax.swing.JButton();
-        buyButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        amountField = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        accountField = new javax.swing.JTextField();
-        errorField = new javax.swing.JTextField();
-        sellButton = new javax.swing.JButton();
-        favouriteButton = new javax.swing.JButton();
+        jSlider1 = new javax.swing.JSlider();
+        jScrollBar1 = new javax.swing.JScrollBar();
+        mainPanel = new javax.swing.JPanel();
+        lblMoney = new javax.swing.JLabel();
+        btnPurchase = new javax.swing.JButton();
+        btnSell = new javax.swing.JButton();
+        lblAmount = new javax.swing.JLabel();
+        txtAmount = new javax.swing.JTextField();
+        txtAccount = new javax.swing.JTextField();
+        btnBack = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtarInfo = new javax.swing.JTextArea();
+        btnFavourite = new javax.swing.JButton();
+        lblError = new javax.swing.JLabel();
+        secondaryPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        backButton.setText("Back");
-        backButton.addActionListener(new java.awt.event.ActionListener() {
+        mainPanel.setBackground(new java.awt.Color(235, 217, 180));
+
+        lblMoney.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblMoney.setForeground(new java.awt.Color(99, 136, 137));
+        lblMoney.setText("Money In Account:");
+
+        btnPurchase.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnPurchase.setForeground(new java.awt.Color(99, 136, 137));
+        btnPurchase.setText("Purchase");
+        btnPurchase.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backButtonActionPerformed(evt);
+                btnPurchaseActionPerformed(evt);
             }
         });
 
-        buyButton.setText("Purchase Shares");
-        buyButton.addActionListener(new java.awt.event.ActionListener() {
+        btnSell.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnSell.setForeground(new java.awt.Color(99, 136, 137));
+        btnSell.setText("Sell");
+        btnSell.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buyButtonActionPerformed(evt);
+                btnSellActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Stock info listed and formatted in this space");
+        lblAmount.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblAmount.setForeground(new java.awt.Color(99, 136, 137));
+        lblAmount.setText("Amount:");
 
-        jLabel2.setText("Amount to Purchase: ");
+        txtAmount.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        jLabel3.setText("Money in Account: ");
+        txtAccount.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        errorField.setEditable(false);
-        errorField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-
-        sellButton.setText("Sell Shares");
-        sellButton.addActionListener(new java.awt.event.ActionListener() {
+        btnBack.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(99, 136, 137));
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sellButtonActionPerformed(evt);
+                btnBackActionPerformed(evt);
             }
         });
 
-        favouriteButton.setText("Favourite");
-        favouriteButton.addActionListener(new java.awt.event.ActionListener() {
+        txtarInfo.setBackground(new java.awt.Color(249, 239, 219));
+        txtarInfo.setColumns(20);
+        txtarInfo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtarInfo.setForeground(new java.awt.Color(99, 136, 137));
+        txtarInfo.setRows(5);
+        jScrollPane1.setViewportView(txtarInfo);
+
+        btnFavourite.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnFavourite.setForeground(new java.awt.Color(99, 136, 137));
+        btnFavourite.setText("Favourite");
+        btnFavourite.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                favouriteButtonActionPerformed(evt);
+                btnFavouriteActionPerformed(evt);
             }
         });
+
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblError, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(0, 2, Short.MAX_VALUE)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(lblMoney)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnFavourite, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(lblAmount)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(mainPanelLayout.createSequentialGroup()
+                                        .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(106, 106, 106)
+                                        .addComponent(btnPurchase)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnSell, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                .addGap(84, 84, 84))
+        );
+        mainPanelLayout.setVerticalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtAccount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnFavourite)
+                    .addComponent(lblMoney, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
+                .addGap(20, 20, 20)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPurchase)
+                    .addComponent(btnSell)
+                    .addComponent(lblAmount))
+                .addGap(1, 1, 1)
+                .addComponent(lblError, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        secondaryPanel.setBackground(new java.awt.Color(157, 188, 152));
+
+        javax.swing.GroupLayout secondaryPanelLayout = new javax.swing.GroupLayout(secondaryPanel);
+        secondaryPanel.setLayout(secondaryPanelLayout);
+        secondaryPanelLayout.setHorizontalGroup(
+            secondaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        secondaryPanelLayout.setVerticalGroup(
+            secondaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 30, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(errorField)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(backButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(accountField, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(128, 128, 128)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(89, 89, 89)
-                        .addComponent(jLabel2)
-                        .addGap(5, 5, 5)
-                        .addComponent(amountField, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buyButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(sellButton)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addComponent(favouriteButton))
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(secondaryPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(accountField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(favouriteButton))
-                .addGap(46, 46, 46)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buyButton)
-                    .addComponent(jLabel2)
-                    .addComponent(amountField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sellButton)
-                .addGap(8, 8, 8)
-                .addComponent(backButton)
-                .addGap(8, 8, 8)
-                .addComponent(errorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(secondaryPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        menu m = new menu();
-        m.setVisible((true));
-        this.dispose();
-    }//GEN-LAST:event_backButtonActionPerformed
-
-    private void buyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyButtonActionPerformed
+    private void btnPurchaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPurchaseActionPerformed
         double stockCost = 0;
         int stockAmount;
         double accountHoldings = 0; 
         String stockKey = "";
         try { 
-            stockAmount = Integer.parseInt(amountField.getText());
+            stockAmount = Integer.parseInt(txtAmount.getText());
         } catch (NumberFormatException e) {
-            errorField.setText("Please enter a valid amount of shares to buy.");
+            lblError.setText("Please enter a valid amount of shares to buy.");
             return;
         }
         double purchaseTotal = stockCost * stockAmount;
         if (purchaseTotal > accountHoldings){
-            errorField.setText("Insufficcient Funds");
+            lblError.setText("Insufficcient Funds");
             return;
         }
         double newAH = accountHoldings - purchaseTotal;
-        errorField.setText("Shares bought successfully, " + stockKey + " added to owned stocks");
+        lblError.setText("Shares bought successfully, " + stockKey + " added to owned stocks");
         // set newAH to the user's account's funds in the file
         // add purcahsed stocks to the user's account in the file
         // add purchased stock name to owned stocks in the file
-    }//GEN-LAST:event_buyButtonActionPerformed
+    }//GEN-LAST:event_btnPurchaseActionPerformed
 
-    private void favouriteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favouriteButtonActionPerformed
-        // add stock key to favourited stocks in account file
-        String stockKey = "";
-        errorField.setText(stockKey + " added to favourite stocks");
-    }//GEN-LAST:event_favouriteButtonActionPerformed
-
-    private void sellButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellButtonActionPerformed
+    private void btnSellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSellActionPerformed
         double stockCost = 0; // pull the stock cost from the stock file
         double accountHoldings = 0; // pull the account holdings from the user account file
         int ownedStockAmount = 0; // pull the amount of the given stock owned by the user from the user account file
         String stockKey = "";
         double sellTotal = stockCost * ownedStockAmount;
         double newAH = accountHoldings + sellTotal;
-        errorField.setText("Shares sold successfully, " + stockKey + " removed from owned stocks");
-    }//GEN-LAST:event_sellButtonActionPerformed
+        lblError.setText("Shares sold successfully, " + stockKey + " removed from owned stocks");    }//GEN-LAST:event_btnSellActionPerformed
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        menu m = new menu();
+        m.setVisible((true));
+        this.dispose();
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnFavouriteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFavouriteActionPerformed
+        // add stock key to favourited stocks in account file
+        String stockKey = "";
+        lblError.setText(stockKey + " added to favourite stocks");
+    }//GEN-LAST:event_btnFavouriteActionPerformed
+
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -210,15 +264,20 @@ public class stockinfo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField accountField;
-    private javax.swing.JTextField amountField;
-    private javax.swing.JButton backButton;
-    private javax.swing.JButton buyButton;
-    private javax.swing.JTextField errorField;
-    private javax.swing.JButton favouriteButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JButton sellButton;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnFavourite;
+    private javax.swing.JButton btnPurchase;
+    private javax.swing.JButton btnSell;
+    private javax.swing.JScrollBar jScrollBar1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSlider jSlider1;
+    private javax.swing.JLabel lblAmount;
+    private javax.swing.JLabel lblError;
+    private javax.swing.JLabel lblMoney;
+    private javax.swing.JPanel mainPanel;
+    private javax.swing.JPanel secondaryPanel;
+    private javax.swing.JTextField txtAccount;
+    private javax.swing.JTextField txtAmount;
+    private javax.swing.JTextArea txtarInfo;
     // End of variables declaration//GEN-END:variables
 }
