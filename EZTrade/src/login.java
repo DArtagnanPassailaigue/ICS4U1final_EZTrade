@@ -1,6 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import javax.swing.JOptionPane;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -83,7 +80,7 @@ public class login extends javax.swing.JFrame {
                 .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblDescription)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         panelForm.setBackground(new java.awt.Color(249, 239, 219));
