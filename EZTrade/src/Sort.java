@@ -1,18 +1,29 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Other/File.java to edit this template
- */
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
-/**
- *
- * @author darta
- */
-public class favourite_owned {
+public class Sort {
+    public static void quickSort(List<String> stockNames) {
+        if (stockNames == null || stockNames.isEmpty()) {
+            return;
+        }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        // TODO code application logic here
+        // Convert the list to an array for sorting
+        String[] stockArray = stockNames.toArray(new String[0]);
+
+        // Use Arrays.sort() with a custom comparator
+        Arrays.sort(stockArray, Comparator.naturalOrder());
+
+        // Copy the sorted array back to the list
+        stockNames.clear();
+        stockNames.addAll(Arrays.asList(stockArray));
+    }
+    
+    public static String buildTextBlock(List<String> stockNames) {
+        StringBuilder textBlock = new StringBuilder();
+        for (String stockName : stockNames) {
+            textBlock.append(stockName).append("\n");
+        }
+        return textBlock.toString();
     }
 }
