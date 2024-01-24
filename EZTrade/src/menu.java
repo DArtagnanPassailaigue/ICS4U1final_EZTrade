@@ -152,15 +152,18 @@ public class menu extends javax.swing.JFrame {
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         String apiKey = "H4CTFTLF7A5N7CLW";
         menu_class stockDataRetriever = new menu_class(apiKey);
-        String selectedOption = stockTimeInterval.getSelectedItem().toString();
 
+        String selectedOption = stockTimeInterval.getSelectedItem().toString();
         String stockSymbol = txtStockInput.getText();
 
         String validationMessage = stockDataRetriever.isValidStockSymbol(stockSymbol);
+
         if (validationMessage != null) {
             lblErrorMessage.setText(validationMessage);
         } else {
-            String retrievalMessage = stockDataRetriever.retrieveStockData(stockSymbol);
+            // Pass the selected time interval to retrieveStockData
+            String retrievalMessage = stockDataRetriever.retrieveStockData(stockSymbol, selectedOption);
+
             if (retrievalMessage != null) {
                 lblErrorMessage.setText(retrievalMessage);
             } else {

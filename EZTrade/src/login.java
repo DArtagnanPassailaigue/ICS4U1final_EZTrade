@@ -175,6 +175,9 @@ public class login extends javax.swing.JFrame {
         if (login_class.login(username, password, filePath)) {
             // Display a success message if login is successful
             JOptionPane.showMessageDialog(this, "Login successful!");
+            this.dispose(); // Close the login form
+            menu menuForm = new menu();
+            menuForm.setVisible(true);
         } else {
             // Display an error message if the login attempt fails
             JOptionPane.showMessageDialog(this, "Invalid username or password");

@@ -18,7 +18,7 @@ public class menu_class {
         return null; // Indicates valid stock symbol
     }
 
-    public String retrieveStockData(String stockSymbol) {
+    public String retrieveStockData(String stockSymbol, String timeInterval) {
         String validationMessage = isValidStockSymbol(stockSymbol);
         if (validationMessage != null) {
             // Write the validation error message to the JSON file
@@ -27,7 +27,7 @@ public class menu_class {
         }
 
         try {
-            String apiUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + stockSymbol + "&interval=5min&apikey=" + apiKey;
+            String apiUrl = constructApiUrl(timeInterval, stockSymbol, apiKey);
             URL url = new URL(apiUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -66,6 +66,25 @@ public class menu_class {
             // Write the error message to the JSON file
             writeResponseToFile("stock.json", errorMessage);
             return errorMessage; // Return error message
+        }
+    }
+
+    private String constructApiUrl(String timeInterval, String stockSymbol, String apiKey) {
+        String baseUrl = "https://www.alphavantage.co/query?function=";
+
+        switch (timeInterval.toLowerCase()) {
+            case "previous day":
+                return baseUrl + "TIME_SERIES_DAILY&symbol=" + stockSymbol + "&apikey=" + apiKey;
+
+            case "previous month":
+                return baseUrl + "TIME_SERIES_MONTHLY&symbol=" + stockSymbol + "&apikey=" + apiKey;
+
+            case "previous year":
+                return baseUrl + "TIME_SERIES_YEARLY&symbol=" + stockSymbol + "&apikey=" + apiKey;
+
+            // Default to intraday if no valid time interval is provided
+            default:
+                return baseUrl + "TIME_SERIES_INTRADAY&symbol=" + stockSymbol + "&interval=5min&apikey=" + apiKey;
         }
     }
 
