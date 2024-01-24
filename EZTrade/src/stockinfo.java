@@ -1,27 +1,26 @@
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
-import java.io.BufferedReader;
+import java.io.*;
 import org.knowm.xchart.BitmapEncoder;
 import org.knowm.xchart.XYChartBuilder;
 import org.knowm.xchart.style.markers.SeriesMarkers;
 import org.json.simple.parser.ParseException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import java.io.FileReader;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class stockinfo extends javax.swing.JFrame {
     // Static variables to hold stock information
     public static String symbol;
-    public static double accountHoldings = 1000; // get actual account holdings from user file
+    public static double accountHoldings;
     private String apiKey = "H4CTFTLF7A5N7CLW";
     public static double avgOpen;
-    public stockinfo() {
+    private static int firstNumber;
+    public stockinfo(int firstNumber) {
         initComponents();
+        this.firstNumber = firstNumber;
+        updateAccountHoldings();
         txtAccount.setText("$" + String.format("%.2f", accountHoldings));
         initialize();        
     }
@@ -220,7 +219,7 @@ public class stockinfo extends javax.swing.JFrame {
         lblError.setText("Shares bought successfully, " + stockKey + " added to owned stocks");
         // Update the displayed account balance after the purchase.
         txtAccount.setText("$" + String.format("%.2f", accountHoldings));
-        // TODO: Update account holdings in the user file. This step may involve saving the changes to a file.
+        saveAccountHoldingsToCSV();
     }//GEN-LAST:event_btnPurchaseActionPerformed
 
     private void btnSellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSellActionPerformed
@@ -232,11 +231,11 @@ public class stockinfo extends javax.swing.JFrame {
         double sellTotal = stockCost * ownedStockAmount;
         accountHoldings = accountHoldings + sellTotal;
         txtAccount.setText("$" + String.format("%.2f", accountHoldings));
-        // UPDATE ACCOUNT HOLDINGS IN USER FILE
+        saveAccountHoldingsToCSV();
         lblError.setText("Shares sold successfully, " + stockKey + " removed from owned stocks");    }//GEN-LAST:event_btnSellActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        menu m = new menu();
+        menu m = new menu(firstNumber);
         m.setVisible((true));
         this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
@@ -247,6 +246,63 @@ public class stockinfo extends javax.swing.JFrame {
         lblError.setText(stockKey + " added to favourite stocks");
     }//GEN-LAST:event_btnFavouriteActionPerformed
 
+    private void updateAccountHoldings() {
+        // Specify the file path for user accounts data (CSV file)
+        String filePath = "accounts.csv";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            // Iterate through each line in the file
+            while ((line = reader.readLine()) != null) {
+                // Split the line into parts using a comma as the delimiter
+                String[] parts = line.split(",");
+                // Check if the line contains the user's account number
+                if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
+                    // Extract and update the accountHoldings variable
+                    accountHoldings = Double.parseDouble(parts[4].trim());
+                    return;  // Stop iterating once the user is found
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the IOException appropriately (log, show error message, etc.)
+        }
+
+        // If the user is not found or an error occurs, set accountHoldings to 0
+        accountHoldings = 0;
+    }
+    
+    private void saveAccountHoldingsToCSV() {
+        String filePath = "accounts.csv";
+        List<String> lines = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
+                    // Modify the accountHoldings value in the line
+                    parts[4] = Double.toString(accountHoldings);
+                    line = String.join(",", parts);
+                }
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the IOException appropriately (log, show error message, etc.)
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            // Write the updated content back to the file
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the IOException appropriately (log, show error message, etc.)
+        }
+    }
     
     public void initialize(){
         menu_class stockDataRetriever = new menu_class(apiKey);
@@ -486,7 +542,7 @@ public class stockinfo extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new stockinfo().setVisible(true);
+                new stockinfo(firstNumber).setVisible(true);
             }
         });
     }

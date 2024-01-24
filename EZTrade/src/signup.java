@@ -374,7 +374,7 @@ public class signup extends javax.swing.JFrame {
             }
 
             // Write the newNumber, username, password, and credit card number to the CSV file
-            writer.write(newNumber + "," + username + "," + password + "," + cardNum + "0" + "," + favourites + "," + owned);
+            writer.write(entryNumber + "," + username + "," + password + "," + cardNum + "," + "0" + "," + favourites + "," + owned);
 
             // Close the writer to release resources
             writer.close();

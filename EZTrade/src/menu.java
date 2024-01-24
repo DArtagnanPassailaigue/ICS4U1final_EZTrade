@@ -1,8 +1,10 @@
 public class menu extends javax.swing.JFrame {
     private String symbol;
     private String interval;
-    public menu() {
+    private static int firstNumber;
+    public menu(int firstNumber) {
         initComponents();
+        this.firstNumber = firstNumber;
     }
 
     @SuppressWarnings("unchecked")
@@ -160,7 +162,7 @@ public class menu extends javax.swing.JFrame {
             if (retrievalMessage != null) {
                 lblErrorMessage.setText(retrievalMessage);
             } else {
-                stockinfo Stockinfo = new stockinfo();
+                stockinfo Stockinfo = new stockinfo(firstNumber);
                 Stockinfo.setVisible(true);
                 this.dispose();
             }
@@ -172,7 +174,9 @@ public class menu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void favOwnedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favOwnedButtonActionPerformed
-        //
+        favouriteowned favOwned = new favouriteowned(firstNumber);
+        favOwned.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_favOwnedButtonActionPerformed
 
     // Setter methods for symbol and interval
@@ -211,7 +215,7 @@ public class menu extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new menu().setVisible(true);
+                new menu(firstNumber).setVisible(true);
             }
         });
     }

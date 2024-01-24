@@ -168,12 +168,18 @@ public class login extends javax.swing.JFrame {
         String password = txtPassword.getText().trim();
         // Specify the file path for user accounts data (CSV file)
         String filePath = "accounts.csv";
+
         // Attempt to log in using the login_class method
-        if (login_class.login(username, password, filePath)) {
+        String result = login_class.login(username, password, filePath);
+
+        if (result != null) {
             // Display a success message if login is successful
             JOptionPane.showMessageDialog(this, "Login successful!");
+
+            // Get the first number from the result and pass it to the menu JFrame
+            int firstNumber = Integer.parseInt(result);
             this.dispose(); // Close the login form
-            menu menuForm = new menu();
+            menu menuForm = new menu(firstNumber); // Pass the firstNumber to the menu constructor
             menuForm.setVisible(true);
         } else {
             // Display an error message if the login attempt fails

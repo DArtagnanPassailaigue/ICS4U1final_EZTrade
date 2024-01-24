@@ -1,3 +1,9 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -5,8 +11,10 @@ public class favouriteowned extends javax.swing.JFrame {
     // Lists to store favourite and owned stocks
     List<String> favouriteStocks = Arrays.asList(); // Import favourited stocks from file here
     List<String> ownedStocks = Arrays.asList(); // Import owned stocks from file here
+    private static int firstNumber;
+    private double accountHoldings;
     // Constructor for the JFrame
-    public favouriteowned() {
+    public favouriteowned(int firstNumber) {
         // Sort the lists of favourite and owned stocks using quicksort
         Sort.quickSort(favouriteStocks);
         Sort.quickSort(ownedStocks);
@@ -15,6 +23,8 @@ public class favouriteowned extends javax.swing.JFrame {
         txtarOwn.setText(Sort.buildTextBlock(ownedStocks));
         // Initialize the components of the JFrame
         initComponents();
+        this.firstNumber = firstNumber;
+        updateAccountHoldings();
     }
 
     @SuppressWarnings("unchecked")
@@ -205,7 +215,6 @@ public class favouriteowned extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         double toAdd;
-        double currentFunds = 0; // Placeholder value; get the actual value from the file
         // Attempt to parse the input from the text field as a double
         try {
             toAdd = Double.parseDouble(txtAdd.getText());
@@ -220,13 +229,11 @@ public class favouriteowned extends javax.swing.JFrame {
             return;
         }
         // Calculate the total funds after adding the entered amount
-        double added = toAdd + currentFunds;
-        // Update the user's funds in the account (Actual implementation needed here)
-        // Display a message indicating the pending transaction and contact with the bank
+        accountHoldings = toAdd + accountHoldings;
+        saveAccountHoldingsToCSV();
         lblError.setText("$" + Double.toString(toAdd) + " pending onto your account, bank contacted");    }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnClaimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClaimActionPerformed
-        double accountHoldings = 0; // Placeholder value; get the actual value from the user file
         // Calculate the amount to be claimed, subtracted, and the final claimed amount
         double claimed = accountHoldings;
         // Check if there is no money in the account to claim
@@ -240,22 +247,77 @@ public class favouriteowned extends javax.swing.JFrame {
         // Display a message indicating the claimed and deducted amounts
         lblError.setText("$" + finalClaimed + " added to your bank account, $" + stolen + " subtracted as payment. Thank you for choosing EZTrade!");
         // Update the user's balance to the newAcc value (Actual implementation needed here)
-        double newAcc = 0;
-        // set the user's balance to newAcc (Actual implementation needed here)
+        accountHoldings = 0;
+        saveAccountHoldingsToCSV();
     }//GEN-LAST:event_btnClaimActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // Create a new instance of the 'menu' class
-        menu m = new menu();
+        menu m = new menu(firstNumber);
         // Set the 'menu' frame to be visible
         m.setVisible((true));
         // Dispose of the current frame (close the current window)
         this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
  
-    /**
-     * @param args the command line arguments
-     */
+    private void updateAccountHoldings() {
+        // Specify the file path for user accounts data (CSV file)
+        String filePath = "accounts.csv";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            // Iterate through each line in the file
+            while ((line = reader.readLine()) != null) {
+                // Split the line into parts using a comma as the delimiter
+                String[] parts = line.split(",");
+                // Check if the line contains the user's account number
+                if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
+                    // Extract and update the accountHoldings variable
+                    accountHoldings = Double.parseDouble(parts[4].trim());
+                    return;  // Stop iterating once the user is found
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the IOException appropriately (log, show error message, etc.)
+        }
+
+        // If the user is not found or an error occurs, set accountHoldings to 0
+        accountHoldings = 0;
+    }
+    
+    private void saveAccountHoldingsToCSV() {
+        String filePath = "accounts.csv";
+        List<String> lines = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
+                    // Modify the accountHoldings value in the line
+                    parts[4] = Double.toString(accountHoldings);
+                    line = String.join(",", parts);
+                }
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the IOException appropriately (log, show error message, etc.)
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            // Write the updated content back to the file
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the IOException appropriately (log, show error message, etc.)
+        }
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -283,7 +345,7 @@ public class favouriteowned extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new favouriteowned().setVisible(true);
+                new favouriteowned(firstNumber).setVisible(true);
             }
         });
     }

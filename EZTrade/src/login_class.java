@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class login_class {
     // Method to validate user login credentials
-    public static boolean login(String username, String password, String filePath) {
+    public static String login(String username, String password, String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             // Iterate through each line in the file
@@ -18,7 +18,8 @@ public class login_class {
                     String storedPassword = parts[1].trim();
                     // Compare entered username and password with stored credentials
                     if (username.equals(storedUsername) && password.equals(storedPassword)) {
-                        return true; // Successful login
+                        // Return the additional info (first number in this case)
+                        return parts[2].trim();
                     }
                 }
             }
@@ -27,6 +28,6 @@ public class login_class {
             // Handle the IOException appropriately (log, show error message, etc.)
         }
 
-        return false; // Invalid login
+        return null; // Invalid login
     }
 }
