@@ -207,7 +207,8 @@ public class login extends javax.swing.JFrame {
         signup signupForm = new signup();
         signupForm.setVisible(true);
     }//GEN-LAST:event_btnSignUpActionPerformed
-  
+    
+    
     
     /**
      * @param args the command line arguments

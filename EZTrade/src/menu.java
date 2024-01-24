@@ -1,7 +1,12 @@
-import java.io.*;
-import java.net.*;
-import javax.swing.*;
+import org.knowm.xchart.*;
+import org.knowm.xchart.style.Styler;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
+import javax.swing.*;
+import java.io.FileReader;
+import java.util.*;
 public class menu extends javax.swing.JFrame {
     private String symbol;
     private String interval;
@@ -66,7 +71,7 @@ public class menu extends javax.swing.JFrame {
             }
         });
 
-        stockTimeInterval.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Previous Day", "Previous Week", "Previous Month" }));
+        stockTimeInterval.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "daily", "weekly", "monthly" }));
 
         javax.swing.GroupLayout mainBackgroundLayout = new javax.swing.GroupLayout(mainBackground);
         mainBackground.setLayout(mainBackgroundLayout);
@@ -78,14 +83,13 @@ public class menu extends javax.swing.JFrame {
                     .addGroup(mainBackgroundLayout.createSequentialGroup()
                         .addComponent(lblStockInput)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(mainBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblErrorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtStockInput, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtStockInput, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(favOwnedButton)
                     .addComponent(stockTimeInterval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(109, Short.MAX_VALUE))
+            .addComponent(lblErrorMessage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         mainBackgroundLayout.setVerticalGroup(
             mainBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,7 +154,7 @@ public class menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String apiKey = "H4CTFTLF7A5N7CLW";
+        String apiKey = "G2BDTT8KOTNFRFW0";
         menu_class stockDataRetriever = new menu_class(apiKey);
 
         String selectedOption = stockTimeInterval.getSelectedItem().toString();
@@ -167,13 +171,74 @@ public class menu extends javax.swing.JFrame {
             if (retrievalMessage != null) {
                 lblErrorMessage.setText(retrievalMessage);
             } else {
-                stockinfo si = new stockinfo();
-                si.setVisible((true));
-                this.dispose();
+
+                try {
+                    // Read JSON file
+                    JSONParser parser = new JSONParser();
+                    JSONObject json = (JSONObject) parser.parse(new FileReader("stock.json"));
+
+                    // Extract time series based on selected option
+                    String timeSeriesKey = getTimeSeriesKey(selectedOption);
+
+                    System.out.println("JSON Response: " + json);
+                    System.out.println("Time Series Key: " + timeSeriesKey);
+
+                    // Check if the timeSeriesKey exists in the JSON
+                    if (!json.containsKey(timeSeriesKey)) {
+                        lblErrorMessage.setText("Invalid JSON format. Time Series not found for key: " + timeSeriesKey);
+                        return;
+                    }
+
+                    // Extract time series
+                    JSONObject timeSeries = (JSONObject) json.get(timeSeriesKey);
+
+                    // Check if timeSeries is not null
+                    if (timeSeries == null) {
+                        lblErrorMessage.setText("Invalid JSON format. Time Series is null.");
+                        return;
+                    }
+
+                    // Get the last 5 entries
+                    List<String> dates = new ArrayList<>(timeSeries.keySet());
+                    Collections.sort(dates, Collections.reverseOrder());
+                    List<Double> openValues = new ArrayList<>();
+
+                    for (int i = 0; i < Math.min(5, dates.size()); i++) {
+                        JSONObject entry = (JSONObject) timeSeries.get(dates.get(i));
+                        openValues.add(Double.parseDouble(entry.get("1. open").toString()));
+                    }
+
+                    // Create XChart line graph
+                    SwingUtilities.invokeLater(() -> {
+                        CategoryChart chart = new CategoryChartBuilder().width(800).height(600).title("Open Values Over Time").xAxisTitle("Date").yAxisTitle("Open Value").build();
+                        chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNW);
+
+                        chart.addSeries("Open Values", dates.subList(0, openValues.size()), openValues);
+
+                        new SwingWrapper<>(chart).displayChart();
+                    });
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    lblErrorMessage.setText("Error processing JSON data.");
+                }
             }
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
+    private String getTimeSeriesKey(String selectedOption) {
+        switch (selectedOption.toLowerCase()) {
+            case "daily":
+                return "Time Series (Daily)";
+            case "weekly":
+                return "Time Series (Weekly)";
+            case "monthly":
+                return "Time Series (Monthly)";
+            default:
+                throw new IllegalArgumentException("Invalid time series option: " + selectedOption);
+        }
+    }
+            
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnExitActionPerformed
