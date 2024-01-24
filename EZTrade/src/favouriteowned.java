@@ -9,7 +9,7 @@ public class favouriteowned extends javax.swing.JFrame {
         Sort.quickSort(favouriteStocks);
         Sort.quickSort(ownedStocks);
         favouriteField.setText(Sort.buildTextBlock(favouriteStocks));
-        ownedField.setText(Sort.buildTextBlock(ownedStocks));
+        txtarOwn.setText(Sort.buildTextBlock(ownedStocks));
         initComponents();
     }
 
@@ -17,211 +17,239 @@ public class favouriteowned extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        backButton = new javax.swing.JButton();
-        errorField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         favouriteField = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        ownedField = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        addField = new javax.swing.JTextField();
-        addButton = new javax.swing.JButton();
-        claimButton = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        holdingField = new javax.swing.JTextField();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        backButton.setText("Back");
-        backButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backButtonActionPerformed(evt);
-            }
-        });
-
-        errorField.setEditable(false);
-        errorField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextArea1 = new javax.swing.JTextArea();
+        mainPanel = new javax.swing.JPanel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        txtarOwn = new javax.swing.JTextArea();
+        btnBack = new javax.swing.JButton();
+        lblOwn = new javax.swing.JLabel();
+        lblFav = new javax.swing.JLabel();
+        lblAdd = new javax.swing.JLabel();
+        lblHolding = new javax.swing.JLabel();
+        txtAdd = new javax.swing.JTextField();
+        txtHolding = new javax.swing.JTextField();
+        btnAdd = new javax.swing.JButton();
+        btnClaim = new javax.swing.JButton();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        txtarFav = new javax.swing.JTextArea();
+        lblError = new javax.swing.JLabel();
+        secondaryFrame = new javax.swing.JPanel();
 
         favouriteField.setEditable(false);
         favouriteField.setColumns(1);
         favouriteField.setRows(100);
         jScrollPane1.setViewportView(favouriteField);
 
-        ownedField.setEditable(false);
-        ownedField.setColumns(1);
-        ownedField.setRows(100);
-        jScrollPane2.setViewportView(ownedField);
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane2.setViewportView(jTextArea1);
 
-        jLabel1.setText("Favourites");
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel2.setText("Owned");
+        mainPanel.setBackground(new java.awt.Color(235, 217, 180));
 
-        addButton.setText("Add Funds:");
-        addButton.addActionListener(new java.awt.event.ActionListener() {
+        txtarOwn.setEditable(false);
+        txtarOwn.setColumns(20);
+        txtarOwn.setRows(5);
+        jScrollPane8.setViewportView(txtarOwn);
+
+        btnBack.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(99, 136, 137));
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addButtonActionPerformed(evt);
+                btnBackActionPerformed(evt);
             }
         });
 
-        claimButton.setText("Claim Earnings");
-        claimButton.addActionListener(new java.awt.event.ActionListener() {
+        lblOwn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblOwn.setForeground(new java.awt.Color(99, 136, 137));
+        lblOwn.setText("Owned:");
+
+        lblFav.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblFav.setForeground(new java.awt.Color(99, 136, 137));
+        lblFav.setText("Favourited:");
+
+        lblAdd.setBackground(new java.awt.Color(99, 136, 137));
+        lblAdd.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblAdd.setForeground(new java.awt.Color(99, 136, 137));
+        lblAdd.setText("Add Funds:");
+
+        lblHolding.setBackground(new java.awt.Color(99, 136, 137));
+        lblHolding.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblHolding.setForeground(new java.awt.Color(99, 136, 137));
+        lblHolding.setText("Current Hodings:");
+
+        txtAdd.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        txtHolding.setEditable(false);
+        txtHolding.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        btnAdd.setBackground(new java.awt.Color(157, 188, 152));
+        btnAdd.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
+        btnAdd.setText("Add");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                claimButtonActionPerformed(evt);
+                btnAddActionPerformed(evt);
             }
         });
 
-        jLabel3.setText("Current Holdings:");
+        btnClaim.setBackground(new java.awt.Color(157, 188, 152));
+        btnClaim.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnClaim.setForeground(new java.awt.Color(255, 255, 255));
+        btnClaim.setText("Claim Earnings");
+        btnClaim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClaimActionPerformed(evt);
+            }
+        });
 
-        holdingField.setEditable(false);
+        txtarFav.setEditable(false);
+        txtarFav.setColumns(20);
+        txtarFav.setRows(5);
+        jScrollPane10.setViewportView(txtarFav);
+
+        lblError.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnBack))
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(lblHolding)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtHolding))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jScrollPane10, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblFav, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(mainPanelLayout.createSequentialGroup()
+                                            .addComponent(lblAdd)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(30, 30, 30)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(btnAdd)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnClaim))
+                            .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblOwn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
+        );
+        mainPanelLayout.setVerticalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblOwn)
+                            .addComponent(lblFav)))
+                    .addComponent(btnBack))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAdd)
+                    .addComponent(btnAdd)
+                    .addComponent(btnClaim)
+                    .addComponent(txtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblHolding)
+                    .addComponent(txtHolding, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblError, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        secondaryFrame.setBackground(new java.awt.Color(157, 188, 152));
+
+        javax.swing.GroupLayout secondaryFrameLayout = new javax.swing.GroupLayout(secondaryFrame);
+        secondaryFrame.setLayout(secondaryFrameLayout);
+        secondaryFrameLayout.setHorizontalGroup(
+            secondaryFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        secondaryFrameLayout.setVerticalGroup(
+            secondaryFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(errorField)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(102, 102, 102)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(118, 118, 118))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(173, 173, 173)
-                        .addComponent(claimButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(138, 138, 138)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(holdingField))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(addButton)
-                                .addGap(4, 4, 4)
-                                .addComponent(addField, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(59, Short.MAX_VALUE))
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(secondaryFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(addButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(claimButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(holdingField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(backButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(errorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(secondaryFrame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         double toAdd;
         double currentFunds = 0; // get this from the file
         try {
-            toAdd = Double.parseDouble(addField.getText());
+            toAdd = Double.parseDouble(txtAdd.getText());
         } catch (NumberFormatException e){
-            errorField.setText("Please enter a valid numerical amount");
+            lblError.setText("Please enter a valid numerical amount");
             return;
         }
         if (toAdd < 0){
-            errorField.setText("Please enter a positive amount of money to add to your account");
+            lblError.setText("Please enter a positive amount of money to add to your account");
             return;
         }
         double added = toAdd + currentFunds;
         // set the user's money in account to "added"
-        errorField.setText("$" + Double.toString(toAdd) + " pending onto your account, bank contacted");
-    }//GEN-LAST:event_addButtonActionPerformed
+        lblError.setText("$" + Double.toString(toAdd) + " pending onto your account, bank contacted");    }//GEN-LAST:event_btnAddActionPerformed
 
-    private void claimButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_claimButtonActionPerformed
+    private void btnClaimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClaimActionPerformed
         double accountHoldings = 0; // get this from user file
         double claimed = accountHoldings;
         if (claimed == 0){
-            errorField.setText("There is no money in your account to claim");
+            lblError.setText("There is no money in your account to claim");
         }
         double finalClaimed = claimed * 0.985;
         double stolen = claimed * 0.015;
-        errorField.setText("$" + finalClaimed + " added to your bank account, $" + stolen + " subtracted as payment. Thank you for choosing EZTrade!");
+        lblError.setText("$" + finalClaimed + " added to your bank account, $" + stolen + " subtracted as payment. Thank you for choosing EZTrade!");
         double newAcc = 0;
         // set the user's balance to newAcc;
-    }//GEN-LAST:event_claimButtonActionPerformed
+    }//GEN-LAST:event_btnClaimActionPerformed
 
-    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         /*
         menu m = new menu();
         m.setVisible((true));
         this.dispose();
         */
-    }//GEN-LAST:event_backButtonActionPerformed
-
-    /*
-    add
-        double toAdd;
-        double currentFunds = 0; // get this from the file
-        try {
-            toAdd = Double.parseDouble(addField.getText());
-        } catch (NumberFormatException e){
-            errorField.setText("Please enter a valid numerical amount");
-            return;
-        }
-        if (toAdd < 0){
-            errorField.setText("Please enter a positive amount of money to add to your account");
-            return;
-        }
-        double added = toAdd + currentFunds;
-        // set the user's money in account to "added"
-        errorField.setText("$" + Double.toString(toAdd) + " pending onto your account, bank contacted");
-    
-    claim
-        double accountHoldings = 0; // get this from user file
-        double claimed = accountHoldings;
-        if (claimed == 0){
-            errorField.setText("There is no money in your account to claim");
-        }
-        double finalClaimed = claimed * 0.985;
-        double stolen = claimed * 0.015;
-        errorField.setText("$" + finalClaimed + " added to your bank account, $" + stolen + " subtracted as payment. Thank you for choosing EZTrade!");
-        double newAcc = 0;
-        // set the user's balance to newAcc;
-    
-    back
-        /*
-        menu m = new menu();
-        m.setVisible((true));
-        this.dispose();
-        */
-    
-    
-    
-    
-    
+    }//GEN-LAST:event_btnBackActionPerformed
+ 
     /**
      * @param args the command line arguments
      */
@@ -258,18 +286,51 @@ public class favouriteowned extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addButton;
-    private javax.swing.JTextField addField;
-    private javax.swing.JButton backButton;
-    private javax.swing.JButton claimButton;
-    private javax.swing.JTextField errorField;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnClaim;
     private javax.swing.JTextArea favouriteField;
-    private javax.swing.JTextField holdingField;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea ownedField;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextArea jTextArea3;
+    private javax.swing.JTextArea jTextArea4;
+    private javax.swing.JTextArea jTextArea5;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel lblAdd;
+    private javax.swing.JLabel lblError;
+    private javax.swing.JLabel lblFav;
+    private javax.swing.JLabel lblHolding;
+    private javax.swing.JLabel lblOwn;
+    private javax.swing.JPanel mainPanel;
+    private javax.swing.JPanel secondaryFrame;
+    private javax.swing.JTextField txtAdd;
+    private javax.swing.JTextField txtHolding;
+    private javax.swing.JTextArea txtarFav;
+    private javax.swing.JTextArea txtarOwn;
     // End of variables declaration//GEN-END:variables
 }
