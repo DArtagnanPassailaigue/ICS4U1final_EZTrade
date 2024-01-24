@@ -200,9 +200,7 @@ public class stockinfo extends javax.swing.JFrame {
         accountHoldings = accountHoldings - purchaseTotal;
         lblError.setText("Shares bought successfully, " + stockKey + " added to owned stocks");
         txtAccount.setText("$" + String.format("%.2f", accountHoldings));
-        // set newAH to the user's account's funds in the file
-        // add purcahsed stocks to the user's account in the file
-        // add purchased stock name to owned stocks in the file
+        // UPDATE ACCOUNT HOLDINGS IN USER FILE
     }//GEN-LAST:event_btnPurchaseActionPerformed
 
     private void btnSellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSellActionPerformed
@@ -212,6 +210,7 @@ public class stockinfo extends javax.swing.JFrame {
         double sellTotal = stockCost * ownedStockAmount;
         accountHoldings = accountHoldings + sellTotal;
         txtAccount.setText("$" + String.format("%.2f", accountHoldings));
+        // UPDATE ACCOUNT HOLDINGS IN USER FILE
         lblError.setText("Shares sold successfully, " + stockKey + " removed from owned stocks");    }//GEN-LAST:event_btnSellActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
