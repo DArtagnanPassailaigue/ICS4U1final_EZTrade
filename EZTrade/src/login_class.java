@@ -16,7 +16,7 @@ public class login_class {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 2) {
+                if (parts.length == 3) {
                     String storedUsername = parts[0].trim();
                     String storedPassword = parts[1].trim();
 

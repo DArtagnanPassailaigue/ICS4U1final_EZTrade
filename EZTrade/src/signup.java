@@ -1,3 +1,12 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class signup extends javax.swing.JFrame {
 
     public signup() {
@@ -23,6 +32,7 @@ public class signup extends javax.swing.JFrame {
         phoneField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         errorField = new javax.swing.JTextField();
+        btnLogin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,6 +73,13 @@ public class signup extends javax.swing.JFrame {
 
         errorField.setEditable(false);
         errorField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        btnLogin.setText("Log in");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -108,6 +125,10 @@ public class signup extends javax.swing.JFrame {
                         .addGap(76, 76, 76)
                         .addComponent(confirmButton, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(127, 127, 127))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(258, 258, 258)
+                .addComponent(btnLogin)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,7 +159,9 @@ public class signup extends javax.swing.JFrame {
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
                 .addComponent(confirmButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnLogin)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(errorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -150,66 +173,145 @@ public class signup extends javax.swing.JFrame {
     }//GEN-LAST:event_usernameFieldActionPerformed
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
-        String username;
-        String password;
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+        String expiry = expiryField.getText();
         long cardNum;
         long phoneNum;
         int cvc;
-        String expiry;
-        username = usernameField.getText();
-        password = passwordField.getText();
-        expiry = expiryField.getText();
+
+        // Validate and parse card number
         try {
             cardNum = Long.parseLong(cardNumberField.getText());
         } catch (NumberFormatException e) {
-            errorField.setText("Credit/Debit Card must only contain numbers.");
+            handleInputError("Credit/Debit Card must only contain numbers.");
             return;
         }
+
+        // Validate and parse phone number
         try {
             phoneNum = Long.parseLong(phoneField.getText());
         } catch (NumberFormatException e) {
-            errorField.setText("Provided phone number must only contain numbers");
+            handleInputError("Provided phone number must only contain numbers");
             return;
         }
+
+        // Validate and parse CVC
         try {
             cvc = Integer.parseInt(cvcField.getText());
         } catch (NumberFormatException e) {
-            errorField.setText("CVC must only contain numbers");
+            handleInputError("CVC must only contain numbers");
             return;
         }
-        if (username.contains(" ")){
-            errorField.setText("Username cannot contain spaces");
-            return;
-        }
-        if (!sign_up.isPasswordEffective(password)){
-            errorField.setText("Must contain at least 8 characters, no spaces, one capital letter, and one special character");
-            return;
-        }
-        if (!expiry.matches( "\\d{2}/\\d{2}") || expiry.contains(".*[a-zA-Z].*") || !sign_up.isValidExpiryDate(expiry)){
-            errorField.setText("Expiry date must be a real date in MM/YY format, and card must not be expired");
-            return;
-        }
-        String phoneNumString = Long.toString(phoneNum);
-        String cvcString = Integer.toString(cvc);
-        if (phoneNumString.length() != 10){
-            errorField.setText("Phone number must be a valid length");
-            return;
-        }
-        if (cvcString.length() != 3){
-            errorField.setText("CVC must be a valid length");
-            return;
-        }
-        if (!sign_up.isValidCardNumber(Long.toString(cardNum))){
-            errorField.setText("Credit/debit card number is invalid");
-            return;
-        }
-        errorField.setText("Account created successfully");
-        // write the integration of adding the collected info to the csv file here
-    }//GEN-LAST:event_confirmButtonActionPerformed
 
+        // Validate username
+        if (username.contains(" ")) {
+            handleInputError("Username cannot contain spaces");
+            return;
+        }
+
+        // Validate password using a utility method
+        if (!sign_up.isPasswordEffective(password)) {
+            handleInputError("Password must contain at least 8 characters, no spaces, one capital letter, and one special character");
+            return;
+        }
+
+        // Validate expiry date using a utility method
+        if (!sign_up.isValidExpiryDate(expiry)) {
+            handleInputError("Expiry date must be a real date in MM/YY format, and card must not be expired");
+            return;
+        }
+
+        // Validate phone number length
+        if (Long.toString(phoneNum).length() != 10) {
+            handleInputError("Phone number must be a valid length");
+            return;
+        }
+
+        // Validate CVC length
+        if (Integer.toString(cvc).length() != 3) {
+            handleInputError("CVC must be a valid length");
+            return;
+        }
+
+        // Validate credit/debit card number using a utility method
+        if (!sign_up.isValidCardNumber(Long.toString(cardNum))) {
+            handleInputError("Credit/debit card number is invalid");
+            return;
+        }
+
+        // Check if the username already exists
+        try {
+            if (isUsernameExists(username)) {
+                handleInputError("Username already exists. Choose a different username.");
+                return;
+            }
+        } catch (IOException e) {
+            handleFileError("Error reading from CSV file");
+            return;
+        }
+
+        // Write the collected info to the CSV file
+        writeDataToCsv(username, password, cardNum);
+        // Display success message
+        errorField.setText("Account created successfully");
+                
+    }//GEN-LAST:event_confirmButtonActionPerformed
+    
+    private void handleInputError(String errorMessage) {
+        errorField.setText(errorMessage);
+    }
+
+    private void handleFileError(String errorMessage) {
+        errorField.setText(errorMessage);
+    }
+
+    private void writeDataToCsv(String username, String password, long cardNum) {
+        try {
+            // Open the CSV file for writing (append=true to add new entries)
+            BufferedWriter writer = new BufferedWriter(new FileWriter("accounts.csv", true));
+
+            // Check if the file is empty
+            if (Files.exists(Paths.get("accounts.csv")) && Files.size(Paths.get("accounts.csv")) > 0) {
+                // Add a new line only if the file is not empty
+                writer.newLine();
+            }
+
+            // Write the username, password, and credit card number to the CSV file
+            writer.write(username + "," + password + "," + cardNum);
+
+            // Close the writer to release resources
+            writer.close();
+        } catch (IOException e) {
+            // Handle the exception if writing to the file fails
+            handleFileError("Error writing to CSV file");
+            e.printStackTrace(); // Print the stack trace for debugging purposes
+        }
+    }
+
+    private boolean isUsernameExists(String newUsername) throws IOException {
+        // Check if the username already exists in the CSV file
+        Path filePath = Paths.get("accounts.csv");
+        if (Files.exists(filePath) && Files.size(filePath) > 0) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath.toFile()))) {
+                return reader.lines().anyMatch(line -> {
+                    String[] parts = line.split(",");
+                    return parts.length > 0 && parts[0].equals(newUsername);
+                });
+            }
+        }
+        return false;
+    }
+    
     private void phoneFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_phoneFieldActionPerformed
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        this.dispose(); // Close the login form
+        login loginForm = new login();
+        loginForm.setVisible(true);
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     
     public static void main(String args[]) {
@@ -245,6 +347,7 @@ public class signup extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLogin;
     private javax.swing.JTextField cardNumberField;
     private javax.swing.JButton confirmButton;
     private javax.swing.JTextField cvcField;

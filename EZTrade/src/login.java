@@ -200,7 +200,9 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignUpActionPerformed
-        // TODO add your handling code here:
+        this.dispose(); // Close the login form
+        signup signupForm = new signup();
+        signupForm.setVisible(true);
     }//GEN-LAST:event_btnSignUpActionPerformed
   
     
