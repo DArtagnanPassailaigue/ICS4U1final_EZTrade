@@ -322,20 +322,24 @@ public class signup extends javax.swing.JFrame {
         lblError.setText(errorMessage);
     }
 
-    // Method to write user data to CSV file
     private void writeDataToCsv(String username, String password, long cardNum) {
         try {
             // Open the CSV file for writing (append=true to add new entries)
             BufferedWriter writer = new BufferedWriter(new FileWriter("accounts.csv", true));
 
             // Check if the file is empty
-            if (Files.exists(Paths.get("accounts.csv")) && Files.size(Paths.get("accounts.csv")) > 0) {
-                // Add a new line only if the file is not empty
+            boolean fileIsEmpty = !Files.exists(Paths.get("accounts.csv")) || Files.size(Paths.get("accounts.csv")) == 0;
+
+            // Get the next entry number
+            int entryNumber = getNextEntryNumber(fileIsEmpty);
+
+            // Add a new line only if the file is not empty
+            if (!fileIsEmpty) {
                 writer.newLine();
             }
 
-            // Write the username, password, and credit card number to the CSV file
-            writer.write(username + "," + password + "," + cardNum);
+            // Write the entry number, username, password, and credit card number to the CSV file
+            writer.write(entryNumber + "," + username + "," + password + "," + cardNum);
 
             // Close the writer to release resources
             writer.close();
@@ -345,6 +349,33 @@ public class signup extends javax.swing.JFrame {
             e.printStackTrace(); // Print the stack trace for debugging purposes
         }
     }
+
+    private int getNextEntryNumber(boolean fileIsEmpty) {
+        // Read the last entry number from the file and increment it
+        if (!fileIsEmpty) {
+            try (BufferedReader reader = new BufferedReader(new FileReader("accounts.csv"))) {
+                String lastLine = null;
+                String currentLine;
+
+                while ((currentLine = reader.readLine()) != null) {
+                    lastLine = currentLine;
+                }
+
+                if (lastLine != null) {
+                    String[] parts = lastLine.split(",");
+                    if (parts.length > 0) {
+                        return Integer.parseInt(parts[0]) + 1;
+                    }
+                }
+            } catch (IOException | NumberFormatException e) {
+                e.printStackTrace(); // Print the stack trace for debugging purposes
+            }
+        }
+
+        // If the file is empty or there's an error, start from 1
+        return 1;
+    }
+
 
     private boolean isUsernameExists(String newUsername) throws IOException {
         // Check if the username already exists in the CSV file

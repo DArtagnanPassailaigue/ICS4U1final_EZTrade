@@ -1,16 +1,12 @@
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 import java.io.BufferedReader;
-
 import org.knowm.xchart.BitmapEncoder;
 import org.knowm.xchart.XYChartBuilder;
 import org.knowm.xchart.style.markers.SeriesMarkers;
-
 import org.json.simple.parser.ParseException;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -390,12 +386,12 @@ public class stockinfo extends javax.swing.JFrame {
     
     public static void main(String args[]) {
         try {
-            // Step 1: Read JSON File
+            // Read JSON File
             JSONParser jsonParser = new JSONParser();
             Object obj = jsonParser.parse(new FileReader("stock.json"));
             JSONObject jsonObject = (JSONObject) obj;
 
-            // Step 2: Determine the Interval (daily, weekly, monthly)
+            // Determine the Interval (daily, weekly, monthly)
             String interval = determineInterval(jsonObject);
 
             if (interval == null) {
@@ -403,7 +399,7 @@ public class stockinfo extends javax.swing.JFrame {
                 return;
             }
 
-            // Step 3: Extract Open Values and Dates based on Interval
+            // Extract Open Values and Dates based on Interval
             List<Date> dates = new ArrayList<>();
             List<Double> openValues = new ArrayList<>();
 
@@ -443,7 +439,7 @@ public class stockinfo extends javax.swing.JFrame {
                 return;
             }
 
-            // Step 4: Create XChart Line Chart
+            // Create XChart Line Chart
             String chartTitle = "Last 5 Open Values - " + interval.substring(0, 1).toUpperCase() + interval.substring(1);
             XYChart chart = new XYChartBuilder().width(800).height(600).title(chartTitle).xAxisTitle("Date").yAxisTitle("Open Value").build();
 
@@ -451,13 +447,11 @@ public class stockinfo extends javax.swing.JFrame {
 
             chart.addSeries("Open Values", dates, openValues).setMarker(SeriesMarkers.CIRCLE);
 
-            // Step 5: Display the Chart
+            // Display the Chart
             if (!dates.isEmpty() && !openValues.isEmpty()) {
                 SwingWrapper<XYChart> swingWrapper = new SwingWrapper<>(chart);
                 swingWrapper.displayChart();
 
-                // You can optionally save the chart as an image
-                BitmapEncoder.saveBitmap(chart, "path/to/your/chart.png", BitmapEncoder.BitmapFormat.PNG);
             } else {
                 System.out.println("No data available for the chart.");
             }
@@ -465,11 +459,6 @@ public class stockinfo extends javax.swing.JFrame {
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-    
-    
-    
-    
-        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

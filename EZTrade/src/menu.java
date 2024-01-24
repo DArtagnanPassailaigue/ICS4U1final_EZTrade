@@ -1,18 +1,3 @@
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.knowm.xchart.BitmapEncoder;
-import org.knowm.xchart.SwingWrapper;
-import org.knowm.xchart.XYChart;
-import org.knowm.xchart.XYChartBuilder;
-import org.knowm.xchart.style.markers.SeriesMarkers;
-
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-
 public class menu extends javax.swing.JFrame {
     private String symbol;
     private String interval;
@@ -181,20 +166,7 @@ public class menu extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnSearchActionPerformed
-/*
-    private String getTimeSeriesKey(String selectedOption) {
-        switch (selectedOption.toLowerCase()) {
-            case "daily":
-                return "Time Series (Daily)";
-            case "weekly":
-                return "Time Series (Weekly)";
-            case "monthly":
-                return "Time Series (Monthly)";
-            default:
-                throw new IllegalArgumentException("Invalid time series option: " + selectedOption);
-        }
-    }
-            */
+
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnExitActionPerformed
@@ -214,10 +186,6 @@ public class menu extends javax.swing.JFrame {
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        
-   
-    
-        
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
