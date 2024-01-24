@@ -66,7 +66,7 @@ public class menu extends javax.swing.JFrame {
             }
         });
 
-        stockTimeInterval.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Previous Day", "Previous Month", "Previous Year" }));
+        stockTimeInterval.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Previous Day", "Previous Week", "Previous Month" }));
 
         javax.swing.GroupLayout mainBackgroundLayout = new javax.swing.GroupLayout(mainBackground);
         mainBackground.setLayout(mainBackgroundLayout);
