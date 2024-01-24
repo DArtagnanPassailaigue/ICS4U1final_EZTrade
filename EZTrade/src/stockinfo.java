@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class stockinfo extends javax.swing.JFrame {
+    // Static variables to hold stock information
     public static String symbol;
     public static double accountHoldings = 1000; // get actual account holdings from user file
     private String apiKey = "H4CTFTLF7A5N7CLW";
@@ -183,28 +184,39 @@ public class stockinfo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPurchaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPurchaseActionPerformed
+        // Retrieve the average opening stock price for the selected stock.
         double stockCost = avgOpen;
+        // Declare variables to store the user's input.
         int stockAmount;
         String stockKey = symbol;
         try { 
+            // Attempt to convert the text entered in the "Amount" field to an integer.
             stockAmount = Integer.parseInt(txtAmount.getText());
         } catch (NumberFormatException e) {
+            // Handle the case where the input is not a valid integer.
             lblError.setText("Please enter a valid amount of shares to buy.");
-            return;
+            return; // Exit the method to prevent further execution.
         }
+        // Calculate the total cost of purchasing the specified amount of stocks.
         double purchaseTotal = stockCost * stockAmount;
+        // Check if the user has sufficient funds to make the purchase.
         if (purchaseTotal > accountHoldings){
             lblError.setText("Insufficcient Funds");
-            return;
+            return; // Exit the method if funds are insufficient.
         }
+        // Deduct the purchase amount from the user's account holdings.
         accountHoldings = accountHoldings - purchaseTotal;
+        // Update the error label to indicate a successful purchase and display the stock symbol.
         lblError.setText("Shares bought successfully, " + stockKey + " added to owned stocks");
+        // Update the displayed account balance after the purchase.
         txtAccount.setText("$" + String.format("%.2f", accountHoldings));
-        // UPDATE ACCOUNT HOLDINGS IN USER FILE
+        // TODO: Update account holdings in the user file. This step may involve saving the changes to a file.
     }//GEN-LAST:event_btnPurchaseActionPerformed
 
     private void btnSellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSellActionPerformed
-        double stockCost = avgOpen; // pull the stock cost from the stock file
+        // Retrieve the average opening stock price for the selected stock.
+        double stockCost = avgOpen; // TODO: pull the stock cost from the stock file
+        // Assuming the user owns a fixed amount of the given stock, specify the owned stock amount.
         int ownedStockAmount = 2; // pull the amount of the given stock owned by the user from the user account file
         String stockKey = symbol;
         double sellTotal = stockCost * ownedStockAmount;
@@ -254,7 +266,7 @@ public class stockinfo extends javax.swing.JFrame {
                     continue;
                 }
 
-                if (line.contains("Time Series (5min)")) {
+                if (line.contains("Time Series")) {
                     isInMetaSection = false;
                     isInTimeSeriesSection = true;
                     continue;

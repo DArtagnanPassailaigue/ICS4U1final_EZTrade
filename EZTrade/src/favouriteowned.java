@@ -1,15 +1,19 @@
-
 import java.util.Arrays;
 import java.util.List;
 
 public class favouriteowned extends javax.swing.JFrame {
-    List<String> favouriteStocks = Arrays.asList(); // import favourited stocks from file here
-    List<String> ownedStocks = Arrays.asList(); // import favourited stocks from file here
+    // Lists to store favourite and owned stocks
+    List<String> favouriteStocks = Arrays.asList(); // Import favourited stocks from file here
+    List<String> ownedStocks = Arrays.asList(); // Import owned stocks from file here
+    // Constructor for the JFrame
     public favouriteowned() {
+        // Sort the lists of favourite and owned stocks using quicksort
         Sort.quickSort(favouriteStocks);
         Sort.quickSort(ownedStocks);
+        // Set the text of the respective UI components with the sorted stock names
         favouriteField.setText(Sort.buildTextBlock(favouriteStocks));
         txtarOwn.setText(Sort.buildTextBlock(ownedStocks));
+        // Initialize the components of the JFrame
         initComponents();
     }
 
@@ -214,37 +218,51 @@ public class favouriteowned extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         double toAdd;
-        double currentFunds = 0; // get this from the file
+        double currentFunds = 0; // Placeholder value; get the actual value from the file
+        // Attempt to parse the input from the text field as a double
         try {
             toAdd = Double.parseDouble(txtAdd.getText());
         } catch (NumberFormatException e){
+            // Handle the case where the input is not a valid numerical amount
             lblError.setText("Please enter a valid numerical amount");
             return;
         }
+        // Check if the entered amount is non-negative
         if (toAdd < 0){
             lblError.setText("Please enter a positive amount of money to add to your account");
             return;
         }
+        // Calculate the total funds after adding the entered amount
         double added = toAdd + currentFunds;
-        // set the user's money in account to "added"
+        // Update the user's funds in the account (Actual implementation needed here)
+        // Display a message indicating the pending transaction and contact with the bank
         lblError.setText("$" + Double.toString(toAdd) + " pending onto your account, bank contacted");    }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnClaimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClaimActionPerformed
-        double accountHoldings = 0; // get this from user file
+        double accountHoldings = 0; // Placeholder value; get the actual value from the user file
+        // Calculate the amount to be claimed, subtracted, and the final claimed amount
         double claimed = accountHoldings;
+        // Check if there is no money in the account to claim
         if (claimed == 0){
             lblError.setText("There is no money in your account to claim");
         }
+        // Calculate the final amount to be claimed after deducting a fee
         double finalClaimed = claimed * 0.985;
+        // Calculate the deducted amount (fee) from the claimed amount
         double stolen = claimed * 0.015;
+        // Display a message indicating the claimed and deducted amounts
         lblError.setText("$" + finalClaimed + " added to your bank account, $" + stolen + " subtracted as payment. Thank you for choosing EZTrade!");
+        // Update the user's balance to the newAcc value (Actual implementation needed here)
         double newAcc = 0;
-        // set the user's balance to newAcc;
+        // set the user's balance to newAcc (Actual implementation needed here)
     }//GEN-LAST:event_btnClaimActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // Create a new instance of the 'menu' class
         menu m = new menu();
+        // Set the 'menu' frame to be visible
         m.setVisible((true));
+        // Dispose of the current frame (close the current window)
         this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
  
