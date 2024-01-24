@@ -1,6 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import javax.swing.JOptionPane;
 
 public class login extends javax.swing.JFrame {
@@ -196,9 +193,13 @@ public class login extends javax.swing.JFrame {
         signup signupForm = new signup();
         signupForm.setVisible(true);
     }//GEN-LAST:event_btnSignUpActionPerformed
-  
+    
+    
+    /**
+     * @param args the command line arguments
+     */
+
     public static void main(String args[]) {
-        System.out.print("Hello Branch Login ");
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

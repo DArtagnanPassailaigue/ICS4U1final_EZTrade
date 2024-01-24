@@ -1,9 +1,18 @@
+import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.XYChart;
 import java.io.BufferedReader;
+import org.knowm.xchart.BitmapEncoder;
+import org.knowm.xchart.XYChartBuilder;
+import org.knowm.xchart.style.markers.SeriesMarkers;
+import org.json.simple.parser.ParseException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class stockinfo extends javax.swing.JFrame {
     // Static variables to hold stock information
@@ -14,8 +23,9 @@ public class stockinfo extends javax.swing.JFrame {
     public stockinfo() {
         initComponents();
         txtAccount.setText("$" + String.format("%.2f", accountHoldings));
-        initialize();
+        initialize();        
     }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -361,8 +371,94 @@ public class stockinfo extends javax.swing.JFrame {
         }
         return 0;
     }
-
+    
+    private static String determineInterval(JSONObject jsonObject) {
+        // Check if "Time Series" exists for daily, weekly, or monthly
+        if (jsonObject.containsKey("Time Series (Daily)")) {
+            return "Time Series (Daily)";
+        } else if (jsonObject.containsKey("Weekly Time Series")) {
+            return "Weekly Time Series";
+        } else if (jsonObject.containsKey("Monthly Time Series")) {
+            return "Monthly Time Series";
+        }
+        return null;
+    }
+    
     public static void main(String args[]) {
+        try {
+            // Read JSON File
+            JSONParser jsonParser = new JSONParser();
+            Object obj = jsonParser.parse(new FileReader("stock.json"));
+            JSONObject jsonObject = (JSONObject) obj;
+
+            // Determine the Interval (daily, weekly, monthly)
+            String interval = determineInterval(jsonObject);
+
+            if (interval == null) {
+                System.out.println("Unable to determine the data interval.");
+                return;
+            }
+
+            // Extract Open Values and Dates based on Interval
+            List<Date> dates = new ArrayList<>();
+            List<Double> openValues = new ArrayList<>();
+
+            JSONObject timeSeries = (JSONObject) jsonObject.get(interval);
+
+            // Check if timeSeries is not null
+            if (timeSeries != null) {
+                // Get the keys (dates) and reverse them to get the most recent dates first
+                List<String> sortedDates = new ArrayList<>(timeSeries.keySet());
+                sortedDates.sort((date1, date2) -> date2.compareTo(date1));
+
+                int count = 0;
+                for (String dateString : sortedDates) {
+                    JSONObject data = (JSONObject) timeSeries.get(dateString);
+                    double open = Double.parseDouble((String) data.get("1. open"));
+
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date;
+
+                    try {
+                        date = dateFormat.parse(dateString);
+                    } catch (java.text.ParseException e) {
+                        e.printStackTrace();
+                        continue; // Skip this date and proceed with the next one
+                    }
+
+                    dates.add(date);
+                    openValues.add(open);
+
+                    count++;
+                    if (count == 5) {
+                        break; // Stop after getting the last 5 values
+                    }
+                }
+            } else {
+                System.out.println("No data available for the selected interval.");
+                return;
+            }
+
+            // Create XChart Line Chart
+            String chartTitle = "Last 5 Open Values - " + interval.substring(0, 1).toUpperCase() + interval.substring(1);
+            XYChart chart = new XYChartBuilder().width(800).height(600).title(chartTitle).xAxisTitle("Date").yAxisTitle("Open Value").build();
+
+            chart.getStyler().setXAxisLabelRotation(45);
+
+            chart.addSeries("Open Values", dates, openValues).setMarker(SeriesMarkers.CIRCLE);
+
+            // Display the Chart
+            if (!dates.isEmpty() && !openValues.isEmpty()) {
+                SwingWrapper<XYChart> swingWrapper = new SwingWrapper<>(chart);
+                swingWrapper.displayChart();
+
+            } else {
+                System.out.println("No data available for the chart.");
+            }
+
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

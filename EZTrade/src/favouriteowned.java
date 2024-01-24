@@ -11,7 +11,7 @@ public class favouriteowned extends javax.swing.JFrame {
         Sort.quickSort(favouriteStocks);
         Sort.quickSort(ownedStocks);
         // Set the text of the respective UI components with the sorted stock names
-        favouriteField.setText(Sort.buildTextBlock(favouriteStocks));
+        txtarFav.setText(Sort.buildTextBlock(favouriteStocks));
         txtarOwn.setText(Sort.buildTextBlock(ownedStocks));
         // Initialize the components of the JFrame
         initComponents();
@@ -21,10 +21,6 @@ public class favouriteowned extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        favouriteField = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         mainPanel = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
         txtarOwn = new javax.swing.JTextArea();
@@ -41,15 +37,6 @@ public class favouriteowned extends javax.swing.JFrame {
         txtarFav = new javax.swing.JTextArea();
         lblError = new javax.swing.JLabel();
         secondaryFrame = new javax.swing.JPanel();
-
-        favouriteField.setEditable(false);
-        favouriteField.setColumns(1);
-        favouriteField.setRows(100);
-        jScrollPane1.setViewportView(favouriteField);
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -305,12 +292,8 @@ public class favouriteowned extends javax.swing.JFrame {
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnClaim;
-    private javax.swing.JTextArea favouriteField;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblAdd;
     private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblFav;

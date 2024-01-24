@@ -79,14 +79,14 @@ public class menu_class {
         String baseUrl = "https://www.alphavantage.co/query?function=";
 
         switch (timeInterval.toLowerCase()) {
-            case "previous day":
+            case "daily":
                 return baseUrl + "TIME_SERIES_DAILY&symbol=" + stockSymbol + "&apikey=" + apiKey;
 
-            case "previous month":
-                return baseUrl + "TIME_SERIES_MONTHLY&symbol=" + stockSymbol + "&apikey=" + apiKey;
+            case "weekly":
+                return baseUrl + "TIME_SERIES_WEEKLY&symbol=" + stockSymbol + "&apikey=" + apiKey;
 
-            case "previous year":
-                return baseUrl + "TIME_SERIES_YEARLY&symbol=" + stockSymbol + "&apikey=" + apiKey;
+            case "monthly":
+                return baseUrl + "TIME_SERIES_MONTHLY&symbol=" + stockSymbol + "&apikey=" + apiKey;
 
             // Default to intraday if no valid time interval is provided
             default:

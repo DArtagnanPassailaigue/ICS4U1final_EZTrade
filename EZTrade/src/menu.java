@@ -1,7 +1,3 @@
-import java.io.*;
-import java.net.*;
-import javax.swing.*;
-
 public class menu extends javax.swing.JFrame {
     private String symbol;
     private String interval;
@@ -61,7 +57,7 @@ public class menu extends javax.swing.JFrame {
             }
         });
 
-        stockTimeInterval.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Previous Day", "Previous Week", "Previous Month" }));
+        stockTimeInterval.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "daily", "weekly", "monthly" }));
 
         javax.swing.GroupLayout mainBackgroundLayout = new javax.swing.GroupLayout(mainBackground);
         mainBackground.setLayout(mainBackgroundLayout);
@@ -73,14 +69,13 @@ public class menu extends javax.swing.JFrame {
                     .addGroup(mainBackgroundLayout.createSequentialGroup()
                         .addComponent(lblStockInput)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(mainBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblErrorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtStockInput, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtStockInput, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(favOwnedButton)
                     .addComponent(stockTimeInterval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(109, Short.MAX_VALUE))
+            .addComponent(lblErrorMessage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         mainBackgroundLayout.setVerticalGroup(
             mainBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,6 +143,7 @@ public class menu extends javax.swing.JFrame {
         // API Key for stock data retrieval
         String apiKey = "H4CTFTLF7A5N7CLW";
         // Instance of the menu_class for stock data retrieval
+
         menu_class stockDataRetriever = new menu_class(apiKey);
         // Get selected time interval and stock symbol from GUI components
         String selectedOption = stockTimeInterval.getSelectedItem().toString();
@@ -164,8 +160,8 @@ public class menu extends javax.swing.JFrame {
             if (retrievalMessage != null) {
                 lblErrorMessage.setText(retrievalMessage);
             } else {
-                stockinfo si = new stockinfo();
-                si.setVisible((true));
+                stockinfo Stockinfo = new stockinfo();
+                Stockinfo.setVisible(true);
                 this.dispose();
             }
         }
@@ -176,7 +172,7 @@ public class menu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void favOwnedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favOwnedButtonActionPerformed
-        // TODO add your handling code here:
+        //
     }//GEN-LAST:event_favOwnedButtonActionPerformed
 
     // Setter methods for symbol and interval
