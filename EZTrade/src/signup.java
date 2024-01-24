@@ -221,12 +221,13 @@ public class signup extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        this.dispose(); // Close the login form
         login loginForm = new login();
         loginForm.setVisible(true);
+        this.dispose(); // Close the signup form
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
+        // Retrieve user input
         String username = txtUsername.getText();
         String password = txtPassword.getText();
         String expiry = txtExpiry.getText();
@@ -311,14 +312,17 @@ public class signup extends javax.swing.JFrame {
         lblError.setText("Account created successfully");
     }//GEN-LAST:event_btnCreateActionPerformed
     
+    // Method to handle input errors and display error messages
     private void handleInputError(String errorMessage) {
         lblError.setText(errorMessage);
     }
 
+    // Method to handle file errors and display error messages
     private void handleFileError(String errorMessage) {
         lblError.setText(errorMessage);
     }
 
+    // Method to write user data to CSV file
     private void writeDataToCsv(String username, String password, long cardNum) {
         try {
             // Open the CSV file for writing (append=true to add new entries)
