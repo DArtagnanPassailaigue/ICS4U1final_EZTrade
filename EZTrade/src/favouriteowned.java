@@ -243,11 +243,9 @@ public class favouriteowned extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClaimActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        /*
         menu m = new menu();
         m.setVisible((true));
         this.dispose();
-        */
     }//GEN-LAST:event_btnBackActionPerformed
  
     /**
