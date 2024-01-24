@@ -1,20 +1,10 @@
 import java.io.*;
 import java.net.*;
 import javax.swing.*;
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 
-/**
- *
- * @author 22isr
- */
 public class menu extends javax.swing.JFrame {
-
-    /**
-     * Creates new form menu
-     */
+    private String symbol;
+    private String interval;
     public menu() {
         initComponents();
     }
@@ -34,6 +24,8 @@ public class menu extends javax.swing.JFrame {
         lblErrorMessage = new javax.swing.JLabel();
         btnSearch = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
+        favOwnedButton = new javax.swing.JButton();
+        stockTimeInterval = new javax.swing.JComboBox<>();
         secondaryBackground = new javax.swing.JPanel();
         menuBar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -67,6 +59,15 @@ public class menu extends javax.swing.JFrame {
             }
         });
 
+        favOwnedButton.setText("See Favourited/Owned Stocks");
+        favOwnedButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                favOwnedButtonActionPerformed(evt);
+            }
+        });
+
+        stockTimeInterval.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Previous Day", "Previous Month", "Previous Year" }));
+
         javax.swing.GroupLayout mainBackgroundLayout = new javax.swing.GroupLayout(mainBackground);
         mainBackground.setLayout(mainBackgroundLayout);
         mainBackgroundLayout.setHorizontalGroup(
@@ -81,8 +82,10 @@ public class menu extends javax.swing.JFrame {
                             .addComponent(lblErrorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtStockInput, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(121, Short.MAX_VALUE))
+                    .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(favOwnedButton)
+                    .addComponent(stockTimeInterval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         mainBackgroundLayout.setVerticalGroup(
             mainBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,13 +94,17 @@ public class menu extends javax.swing.JFrame {
                 .addGroup(mainBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblStockInput)
                     .addComponent(txtStockInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(stockTimeInterval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblErrorMessage)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(13, 13, 13)
                 .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btnExit)
-                .addGap(127, 127, 127))
+                .addGap(18, 18, 18)
+                .addComponent(favOwnedButton)
+                .addGap(73, 73, 73))
         );
 
         secondaryBackground.setBackground(new java.awt.Color(157, 188, 152));
@@ -106,7 +113,7 @@ public class menu extends javax.swing.JFrame {
         secondaryBackground.setLayout(secondaryBackgroundLayout);
         secondaryBackgroundLayout.setHorizontalGroup(
             secondaryBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 459, Short.MAX_VALUE)
         );
         secondaryBackgroundLayout.setVerticalGroup(
             secondaryBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,13 +132,16 @@ public class menu extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainBackground, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(secondaryBackground, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mainBackground, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(mainBackground, javax.swing.GroupLayout.PREFERRED_SIZE, 229, Short.MAX_VALUE)
+                .addComponent(mainBackground, javax.swing.GroupLayout.PREFERRED_SIZE, 256, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(secondaryBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -142,6 +152,7 @@ public class menu extends javax.swing.JFrame {
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         String apiKey = "H4CTFTLF7A5N7CLW";
         menu_class stockDataRetriever = new menu_class(apiKey);
+        String selectedOption = stockTimeInterval.getSelectedItem().toString();
 
         String stockSymbol = txtStockInput.getText();
 
@@ -153,8 +164,9 @@ public class menu extends javax.swing.JFrame {
             if (retrievalMessage != null) {
                 lblErrorMessage.setText(retrievalMessage);
             } else {
-                lblErrorMessage.setText(""); // Clear any previous error messages
-                // Additional code for handling successful data retrieval
+                stockinfo si = new stockinfo();
+                si.setVisible((true));
+                this.dispose();
             }
         }
     }//GEN-LAST:event_btnSearchActionPerformed
@@ -163,6 +175,17 @@ public class menu extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnExitActionPerformed
 
+    private void favOwnedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favOwnedButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_favOwnedButtonActionPerformed
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+    
+    public void setInterval(String interval){
+        this.interval = interval;
+    }
     
     /**
      * @param args the command line arguments
@@ -202,6 +225,7 @@ public class menu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnSearch;
+    private javax.swing.JButton favOwnedButton;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JLabel lblErrorMessage;
@@ -209,6 +233,7 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JPanel mainBackground;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JPanel secondaryBackground;
+    private javax.swing.JComboBox<String> stockTimeInterval;
     private javax.swing.JTextField txtStockInput;
     // End of variables declaration//GEN-END:variables
 }
