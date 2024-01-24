@@ -6,9 +6,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class signup extends javax.swing.JFrame {
-
+    public List<String> favourites = new ArrayList<>();
+    public List<List<String>> owned = new ArrayList<>();
+    public int userNum;
     public signup() {
         initComponents();
     }
@@ -307,7 +311,7 @@ public class signup extends javax.swing.JFrame {
         }
 
         // Write the collected info to the CSV file
-        writeDataToCsv(username, password, cardNum);
+        writeDataToCsv(username, password, cardNum, favourites, owned);
         // Display success message
         lblError.setText("Account created successfully");
     }//GEN-LAST:event_btnCreateActionPerformed
@@ -323,8 +327,39 @@ public class signup extends javax.swing.JFrame {
     }
 
     // Method to write user data to CSV file
-    private void writeDataToCsv(String username, String password, long cardNum) {
+    private void writeDataToCsv(String username, String password, long cardNum, List<String> favourites, List<List<String>> owned) {
         try {
+            // Open the CSV file for reading to get the last line
+            BufferedReader reader = new BufferedReader(new FileReader("accounts.csv"));
+
+            String lastLine = null;
+            String currentLine;
+            
+            // Read each line until the end to get the last line
+            while ((currentLine = reader.readLine()) != null) {
+                lastLine = currentLine;
+            }
+
+            reader.close();
+
+            // Extract the leftmost content from the last line
+            long previousNumber = 0;
+
+            if (lastLine != null) {
+                String[] parts = lastLine.split(",");
+                if (parts.length > 0) {
+                    try {
+                        previousNumber = Long.parseLong(parts[0]);
+                    } catch (NumberFormatException e) {
+                        // Handle the exception if parsing fails
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            // Increment the previousNumber by one
+            long newNumber = previousNumber + 1;
+
             // Open the CSV file for writing (append=true to add new entries)
             BufferedWriter writer = new BufferedWriter(new FileWriter("accounts.csv", true));
 
@@ -334,14 +369,14 @@ public class signup extends javax.swing.JFrame {
                 writer.newLine();
             }
 
-            // Write the username, password, and credit card number to the CSV file
-            writer.write(username + "," + password + "," + cardNum);
+            // Write the newNumber, username, password, and credit card number to the CSV file
+            writer.write(newNumber + "," + username + "," + password + "," + cardNum + "0" + "," + favourites + "," + owned);
 
             // Close the writer to release resources
             writer.close();
         } catch (IOException e) {
-            // Handle the exception if writing to the file fails
-            handleFileError("Error writing to CSV file");
+            // Handle the exception if reading or writing to the file fails
+            handleFileError("Error reading or writing to CSV file");
             e.printStackTrace(); // Print the stack trace for debugging purposes
         }
     }
