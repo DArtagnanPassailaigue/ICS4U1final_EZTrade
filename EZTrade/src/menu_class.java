@@ -87,7 +87,7 @@ public class menu_class {
                 return baseUrl + "TIME_SERIES_WEEKLY&symbol=" + stockSymbol + "&apikey=" + apiKey;
 
             case "monthly":
-                return baseUrl + "TIME_SERIES_MONTH&symbol=" + stockSymbol + "&apikey=" + apiKey;
+                return baseUrl + "TIME_SERIES_MONTHLY&symbol=" + stockSymbol + "&apikey=" + apiKey;
 
             // Default to intraday if no valid time interval is provided
             default:

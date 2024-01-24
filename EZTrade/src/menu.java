@@ -1,12 +1,18 @@
-import org.knowm.xchart.*;
-import org.knowm.xchart.style.Styler;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.knowm.xchart.BitmapEncoder;
+import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.XYChart;
+import org.knowm.xchart.XYChartBuilder;
+import org.knowm.xchart.style.markers.SeriesMarkers;
 
-import javax.swing.*;
 import java.io.FileReader;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class menu extends javax.swing.JFrame {
     private String symbol;
     private String interval;
@@ -169,61 +175,13 @@ public class menu extends javax.swing.JFrame {
             if (retrievalMessage != null) {
                 lblErrorMessage.setText(retrievalMessage);
             } else {
-
-                try {
-                    // Read JSON file
-                    JSONParser parser = new JSONParser();
-                    JSONObject json = (JSONObject) parser.parse(new FileReader("stock.json"));
-
-                    // Extract time series based on selected option
-                    String timeSeriesKey = getTimeSeriesKey(selectedOption);
-
-                    System.out.println("JSON Response: " + json);
-                    System.out.println("Time Series Key: " + timeSeriesKey);
-
-                    // Check if the timeSeriesKey exists in the JSON
-                    if (!json.containsKey(timeSeriesKey)) {
-                        lblErrorMessage.setText("Invalid JSON format. Time Series not found for key: " + timeSeriesKey);
-                        return;
-                    }
-
-                    // Extract time series
-                    JSONObject timeSeries = (JSONObject) json.get(timeSeriesKey);
-
-                    // Check if timeSeries is not null
-                    if (timeSeries == null) {
-                        lblErrorMessage.setText("Invalid JSON format. Time Series is null.");
-                        return;
-                    }
-
-                    // Get the last 5 entries
-                    List<String> dates = new ArrayList<>(timeSeries.keySet());
-                    Collections.sort(dates, Collections.reverseOrder());
-                    List<Double> openValues = new ArrayList<>();
-
-                    for (int i = 0; i < Math.min(5, dates.size()); i++) {
-                        JSONObject entry = (JSONObject) timeSeries.get(dates.get(i));
-                        openValues.add(Double.parseDouble(entry.get("1. open").toString()));
-                    }
-
-                    // Create XChart line graph
-                    SwingUtilities.invokeLater(() -> {
-                        CategoryChart chart = new CategoryChartBuilder().width(800).height(600).title("Open Values Over Time").xAxisTitle("Date").yAxisTitle("Open Value").build();
-                        chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNW);
-
-                        chart.addSeries("Open Values", dates.subList(0, openValues.size()), openValues);
-
-                        new SwingWrapper<>(chart).displayChart();
-                    });
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    lblErrorMessage.setText("Error processing JSON data.");
-                }
+                stockinfo Stockinfo = new stockinfo();
+                Stockinfo.setVisible(true);
+                this.dispose();
             }
         }
     }//GEN-LAST:event_btnSearchActionPerformed
-
+/*
     private String getTimeSeriesKey(String selectedOption) {
         switch (selectedOption.toLowerCase()) {
             case "daily":
@@ -236,13 +194,13 @@ public class menu extends javax.swing.JFrame {
                 throw new IllegalArgumentException("Invalid time series option: " + selectedOption);
         }
     }
-            
+            */
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void favOwnedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favOwnedButtonActionPerformed
-        // TODO add your handling code here:
+        //
     }//GEN-LAST:event_favOwnedButtonActionPerformed
 
     // Setter methods for symbol and interval
@@ -256,6 +214,10 @@ public class menu extends javax.swing.JFrame {
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
+        
+   
+    
+        
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
