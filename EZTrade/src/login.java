@@ -190,6 +190,9 @@ public class login extends javax.swing.JFrame {
         String filePath = "accounts.csv"; // Replace with the actual file path a
         if (login_class.login(username, password, filePath)) {
             JOptionPane.showMessageDialog(this, "Login successful!");
+            this.dispose(); // Close the login form
+            menu menuForm = new menu();
+            menuForm.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "Invalid username or password");
         }
