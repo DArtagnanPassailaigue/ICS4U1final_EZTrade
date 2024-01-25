@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.text.DecimalFormat;
 
 public class favouriteowned extends javax.swing.JFrame {
+    
+    DecimalFormat decimalFormat = new DecimalFormat("#.##"); // Keep two decimal places
     // Lists to store favourite and owned stocks
     List<String> favouriteStocks = Arrays.asList(); // Import favourited stocks from file here
     List<String> ownedStocks = Arrays.asList(); // Import owned stocks from file here
@@ -22,7 +25,8 @@ public class favouriteowned extends javax.swing.JFrame {
         // Sort the lists of favourite and owned stocks using quicksort
         Sort.quickSort(favouriteStocks);
         Sort.quickSort(ownedStocks);
-        txtHolding.setText(Double.toString(accountHoldings));
+        
+        txtHolding.setText(decimalFormat.format(accountHoldings));
         // Initialize the components of the JFrame
     }
 
@@ -87,6 +91,11 @@ public class favouriteowned extends javax.swing.JFrame {
 
         txtHolding.setEditable(false);
         txtHolding.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtHolding.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtHoldingActionPerformed(evt);
+            }
+        });
 
         btnAdd.setBackground(new java.awt.Color(157, 188, 152));
         btnAdd.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -230,8 +239,9 @@ public class favouriteowned extends javax.swing.JFrame {
         // Calculate the total funds after adding the entered amount
         accountHoldings = toAdd + accountHoldings;
         saveAccountHoldingsToCSV();
-        txtHolding.setText(Double.toString(accountHoldings));
-        lblError.setText("$" + Double.toString(toAdd) + " pending onto your account, bank contacted");    }//GEN-LAST:event_btnAddActionPerformed
+        txtHolding.setText(decimalFormat.format(accountHoldings));
+        lblError.setText("$" + decimalFormat.format(toAdd) + " pending onto your account, bank contacted");    
+    }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnClaimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClaimActionPerformed
         // Calculate the amount to be claimed, subtracted, and the final claimed amount
@@ -245,11 +255,11 @@ public class favouriteowned extends javax.swing.JFrame {
         // Calculate the deducted amount (fee) from the claimed amount
         double stolen = claimed * 0.015;
         // Display a message indicating the claimed and deducted amounts
-        lblError.setText("$" + finalClaimed + " added to your bank account, $" + stolen + " subtracted as payment. Thank you for choosing EZTrade!");
+        lblError.setText("$" + decimalFormat.format(finalClaimed) + " added to your bank account, $" + decimalFormat.format(stolen) + " subtracted as payment. Thank you for choosing EZTrade!");
         // Update the user's balance to the newAcc value (Actual implementation needed here)
         accountHoldings = 0;
         saveAccountHoldingsToCSV();
-        txtHolding.setText(Double.toString(accountHoldings));
+        txtHolding.setText(decimalFormat.format(accountHoldings));
     }//GEN-LAST:event_btnClaimActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -260,6 +270,10 @@ public class favouriteowned extends javax.swing.JFrame {
         // Dispose of the current frame (close the current window)
         this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void txtHoldingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHoldingActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtHoldingActionPerformed
  
     private void loadFavoriteOwnedLists() {
         String filePath = "accounts.csv";
