@@ -12,14 +12,21 @@ public class login_class {
                 // Split the line into parts using a comma as the delimiter
                 String[] parts = line.split(",");
                 // Check if the line contains three parts (username, password, and additional info)
-                if (parts.length == 3) {
+                if (parts.length >= 3) {
                     // Extract stored username and password from the parts array
-                    String storedUsername = parts[0].trim();
-                    String storedPassword = parts[1].trim();
+                    String storedUsername = parts[1].trim();
+                    String storedPassword = parts[2].trim();
+
+                    // Print debug information
+                    System.out.println("username: " + username);
+                    System.out.println("password: " + password);
+                    System.out.println("storedUsername: " + storedUsername);
+                    System.out.println("storedPassword: " + storedPassword);
+
                     // Compare entered username and password with stored credentials
-                    if (username.equals(storedUsername) && password.equals(storedPassword)) {
+                    if (username.trim().equalsIgnoreCase(storedUsername) && password.trim().equals(storedPassword)) {
                         // Return the additional info (first number in this case)
-                        return parts[2].trim();
+                        return parts[0].trim();
                     }
                 }
             }
