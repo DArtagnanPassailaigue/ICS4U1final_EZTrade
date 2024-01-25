@@ -10,7 +10,7 @@ public class sign_up {
             return false;
         }
         
-        if (password.contains(" ")){
+        if (password.contains(" ") || password.contains(";")){
             return false;
         }
 

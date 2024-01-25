@@ -235,10 +235,10 @@ public class stockinfo extends javax.swing.JFrame {
 
     private void btnSellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSellActionPerformed
         // Retrieve the average opening stock price for the selected stock.
-        double stockCost = avgOpen; // TODO: pull the stock cost from the stock file
+        double stockCost = avgOpen;
 
         // Assuming the user owns a fixed amount of the given stock, specify the owned stock amount.
-        int ownedStockAmount = 2; // TODO: pull the amount of the given stock owned by the user from the user account file
+        int ownedStockAmount = 2;
         String stockKey = symbol;
 
         // Calculate the total amount from selling the owned stock.
@@ -340,12 +340,12 @@ public class stockinfo extends javax.swing.JFrame {
                 if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
                     // Check if the stockKey is already in the favorites list
                     String favorites = parts[5].trim();
-                    List<String> favoritesList = new ArrayList<>(Arrays.asList(favorites.split(";")));
+                    List<String> favoritesList = parseFavorites(favorites);
 
                     if (!favoritesList.contains(stockKey)) {
                         // Stock symbol not found, add it to favorites
                         favoritesList.add(stockKey);
-                        parts[5] = String.join(";", favoritesList);
+                        parts[5] = formatFavorites(favoritesList);
                         line = String.join(";", parts);
                     } else {
                         // Stock symbol is already in favorites, return without adding it again
@@ -374,6 +374,24 @@ public class stockinfo extends javax.swing.JFrame {
         lblError.setText(stockKey + " added to favorite stocks");
     }
 
+    private List<String> parseFavorites(String favorites) {
+        // Parse the favorites string into a list
+        favorites = favorites.substring(1, favorites.length() - 1); // remove surrounding brackets
+        return Arrays.asList(favorites.split(","));
+    }
+
+    private String formatFavorites(List<String> favoritesList) {
+        // Format the favorites list into the desired string format
+        StringBuilder formattedFavorites = new StringBuilder("[");
+        for (String stock : favoritesList) {
+            formattedFavorites.append(stock).append(",");
+        }
+        if (formattedFavorites.length() > 1) {
+            formattedFavorites.deleteCharAt(formattedFavorites.length() - 1); // remove trailing comma
+        }
+        formattedFavorites.append("]");
+        return formattedFavorites.toString();
+    }
 
     // Method to update the 2D list in the 7th column of the CSV file
     private void updateOwnedStocks(String stockKey, int stockAmount) {
@@ -393,24 +411,27 @@ public class stockinfo extends javax.swing.JFrame {
 
                     // Check if the stockKey is already in the ownedStocks list
                     boolean stockAlreadyOwned = false;
-                    for (String stock : ownedStocks.split(";")) {
+                    List<String> ownedStocksList = parseOwnedStocks(ownedStocks);
+
+                    for (int i = 0; i < ownedStocksList.size(); i++) {
+                        String stock = ownedStocksList.get(i);
                         String[] stockInfo = stock.split("\\[");
                         if (stockInfo.length > 0 && stockInfo[0].equals(stockKey)) {
                             stockAlreadyOwned = true;
                             // Update the number of owned shares
                             int currentShares = Integer.parseInt(stockInfo[1].replace("]", ""));
                             currentShares += stockAmount;
-                            stock = stockKey + "[" + currentShares + "]";
+                            ownedStocksList.set(i, stockKey + "[" + currentShares + "]");
                             break;
                         }
                     }
 
                     if (!stockAlreadyOwned) {
                         // Stock symbol not found, add it to ownedStocks
-                        ownedStocks += stockKey + "[" + stockAmount + "]";
+                        ownedStocksList.add(stockKey + "[" + stockAmount + "]");
                     }
 
-                    parts[6] = ownedStocks;
+                    parts[6] = formatOwnedStocks(ownedStocksList);
                     line = String.join(";", parts);
                 }
                 lines.add(line);
@@ -430,6 +451,25 @@ public class stockinfo extends javax.swing.JFrame {
             e.printStackTrace();
             // Handle the IOException appropriately (log, show error message, etc.)
         }
+    }
+
+    private List<String> parseOwnedStocks(String ownedStocks) {
+        // Parse the ownedStocks string into a list
+        ownedStocks = ownedStocks.substring(1, ownedStocks.length() - 1); // remove surrounding brackets
+        return Arrays.asList(ownedStocks.split(";"));
+    }
+
+    private String formatOwnedStocks(List<String> ownedStocksList) {
+        // Format the ownedStocks list into the desired string format
+        StringBuilder formattedOwnedStocks = new StringBuilder("[");
+        for (String stock : ownedStocksList) {
+            formattedOwnedStocks.append(stock).append(";");
+        }
+        if (formattedOwnedStocks.length() > 1) {
+            formattedOwnedStocks.deleteCharAt(formattedOwnedStocks.length() - 1); // remove trailing semicolon
+        }
+        formattedOwnedStocks.append("]");
+        return formattedOwnedStocks.toString();
     }
     
     private void removeStockFromOwnedList(String stockKey) {
@@ -453,7 +493,15 @@ public class stockinfo extends javax.swing.JFrame {
                     }
 
                     // Update the ownedStocks with the modified list
-                    parts[6] = String.join(";", updatedStocks);
+                    StringBuilder updatedStocksStr = new StringBuilder();
+                    for (String updatedStock : updatedStocks) {
+                        updatedStocksStr.append(updatedStock).append(";");
+                    }
+                    if (updatedStocksStr.length() > 0) {
+                        updatedStocksStr.deleteCharAt(updatedStocksStr.length() - 1); // remove trailing semicolon
+                    }
+
+                    parts[6] = updatedStocksStr.toString();
                     line = String.join(";", parts);
                 }
                 lines.add(line);

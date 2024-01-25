@@ -264,7 +264,7 @@ public class signup extends javax.swing.JFrame {
         }
 
         // Validate username
-        if (username.contains(" ")) {
+        if (username.contains(" ") || username.contains(";")) {
             handleInputError("Username cannot contain spaces");
             return;
         }
