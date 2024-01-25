@@ -376,22 +376,29 @@ public class stockinfo extends javax.swing.JFrame {
 
     private List<String> parseFavorites(String favorites) {
         // Parse the favorites string into a list
-        favorites = favorites.substring(1, favorites.length() - 1); // remove surrounding brackets
-        return Arrays.asList(favorites.split(","));
+        List<String> favoritesList = new ArrayList<>();
+        if (favorites != null && favorites.length() > 2) { // Check for null and non-empty
+            favorites = favorites.substring(1, favorites.length() - 1); // remove surrounding brackets
+            favoritesList = new ArrayList<>(Arrays.asList(favorites.split(",")));
+        }
+        return favoritesList;
     }
 
     private String formatFavorites(List<String> favoritesList) {
         // Format the favorites list into the desired string format
         StringBuilder formattedFavorites = new StringBuilder("[");
-        for (String stock : favoritesList) {
-            formattedFavorites.append(stock).append(",");
-        }
-        if (formattedFavorites.length() > 1) {
-            formattedFavorites.deleteCharAt(formattedFavorites.length() - 1); // remove trailing comma
+        if (favoritesList != null) {
+            for (String stock : favoritesList) {
+                formattedFavorites.append(stock).append(",");
+            }
+            if (formattedFavorites.length() > 1) {
+                formattedFavorites.deleteCharAt(formattedFavorites.length() - 1); // remove trailing comma
+            }
         }
         formattedFavorites.append("]");
         return formattedFavorites.toString();
     }
+
 
     // Method to update the 2D list in the 7th column of the CSV file
     private void updateOwnedStocks(String stockKey, int stockAmount) {
