@@ -326,6 +326,7 @@ public class signup extends javax.swing.JFrame {
         lblError.setText(errorMessage);
     }
     // Method to write user data to CSV file
+    
     private void writeDataToCsv(String username, String password, long cardNum, List<String> favourites, List<List<String>> owned) {
         try {
             // Open the CSV file for reading to get the last line
