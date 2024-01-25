@@ -399,8 +399,6 @@ public class stockinfo extends javax.swing.JFrame {
         return formattedFavorites.toString();
     }
 
-
-    // Method to update the 2D list in the 7th column of the CSV file
     private void updateOwnedStocks(String stockKey, int stockAmount) {
         String filePath = "accounts.csv";
         List<String> lines = new ArrayList<>();
@@ -413,29 +411,28 @@ public class stockinfo extends javax.swing.JFrame {
                     // Update the 2D list in the 7th column
                     String ownedStocks = parts[6].trim();
                     if (!ownedStocks.isEmpty()) {
-                        ownedStocks += ";"; // Add a semicolon if the ownedStocks list is not empty
+                        ownedStocks += ","; // Add a comma if the ownedStocks list is not empty
                     }
 
                     // Check if the stockKey is already in the ownedStocks list
                     boolean stockAlreadyOwned = false;
-                    List<String> ownedStocksList = parseOwnedStocks(ownedStocks);
+                    List<String[]> ownedStocksList = parseOwnedStocks(ownedStocks);
 
                     for (int i = 0; i < ownedStocksList.size(); i++) {
-                        String stock = ownedStocksList.get(i);
-                        String[] stockInfo = stock.split("\\[");
+                        String[] stockInfo = ownedStocksList.get(i);
                         if (stockInfo.length > 0 && stockInfo[0].equals(stockKey)) {
                             stockAlreadyOwned = true;
                             // Update the number of owned shares
-                            int currentShares = Integer.parseInt(stockInfo[1].replace("]", ""));
+                            int currentShares = Integer.parseInt(stockInfo[1]);
                             currentShares += stockAmount;
-                            ownedStocksList.set(i, stockKey + "[" + currentShares + "]");
+                            ownedStocksList.get(i)[1] = Integer.toString(currentShares);
                             break;
                         }
                     }
 
                     if (!stockAlreadyOwned) {
                         // Stock symbol not found, add it to ownedStocks
-                        ownedStocksList.add(stockKey + "[" + stockAmount + "]");
+                        ownedStocksList.add(new String[]{stockKey, Integer.toString(stockAmount)});
                     }
 
                     parts[6] = formatOwnedStocks(ownedStocksList);
@@ -460,24 +457,35 @@ public class stockinfo extends javax.swing.JFrame {
         }
     }
 
-    private List<String> parseOwnedStocks(String ownedStocks) {
-        // Parse the ownedStocks string into a list
+    private List<String[]> parseOwnedStocks(String ownedStocks) {
+        // Parse the ownedStocks string into a list of string arrays
         ownedStocks = ownedStocks.substring(1, ownedStocks.length() - 1); // remove surrounding brackets
-        return Arrays.asList(ownedStocks.split(";"));
+        String[] stockInfoArray = ownedStocks.split(",");
+        List<String[]> ownedStocksList = new ArrayList<>();
+
+        for (String stockInfo : stockInfoArray) {
+            String[] stock = stockInfo.split("\\[");
+            if (stock.length == 2) {
+                ownedStocksList.add(new String[]{stock[0], stock[1].replace("]", "")});
+            }
+        }
+
+        return ownedStocksList;
     }
 
-    private String formatOwnedStocks(List<String> ownedStocksList) {
+    private String formatOwnedStocks(List<String[]> ownedStocksList) {
         // Format the ownedStocks list into the desired string format
         StringBuilder formattedOwnedStocks = new StringBuilder("[");
-        for (String stock : ownedStocksList) {
-            formattedOwnedStocks.append(stock).append(";");
+        for (String[] stockInfo : ownedStocksList) {
+            formattedOwnedStocks.append(stockInfo[0]).append("[").append(stockInfo[1]).append("],");
         }
         if (formattedOwnedStocks.length() > 1) {
-            formattedOwnedStocks.deleteCharAt(formattedOwnedStocks.length() - 1); // remove trailing semicolon
+            formattedOwnedStocks.deleteCharAt(formattedOwnedStocks.length() - 1); // remove trailing comma
         }
         formattedOwnedStocks.append("]");
         return formattedOwnedStocks.toString();
     }
+
     
     private void removeStockFromOwnedList(String stockKey) {
         String filePath = "accounts.csv";

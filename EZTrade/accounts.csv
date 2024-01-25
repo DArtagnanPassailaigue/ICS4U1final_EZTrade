@@ -1,2 +1,3 @@
 0;username;password;creditcard;1000.0;[];[]
-1;abcd;Abcdefg!;4556748164977070;0;[];[]
+1;abcd;Abcdefg!;4556748164977070;0;[MSFT];[]
+2;test;1234;4724090303426231;6020.46896;[AAPL,TSLA,MSFT];[MSFT[4],AAPL[3]]
