@@ -226,11 +226,11 @@ public class stockinfo extends javax.swing.JFrame {
         // Update the displayed account balance after the purchase.
         txtAccount.setText("$" + String.format("%.2f", accountHoldings));
 
-        // Add or update the stock in the 2D list in the 7th column of the CSV file
-        updateOwnedStocks(stockKey, stockAmount);
-
         // Save the updated account holdings and stock information to the CSV file
         saveAccountHoldingsToCSV();
+        
+        // Add or update the stock in the 2D list in the 7th column of the CSV file
+        updateOwnedStocks(stockKey, stockAmount);
     }//GEN-LAST:event_btnPurchaseActionPerformed
 
     private void btnSellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSellActionPerformed

@@ -20,9 +20,6 @@ public class menu extends javax.swing.JFrame {
         favOwnedButton = new javax.swing.JButton();
         stockTimeInterval = new javax.swing.JComboBox<>();
         secondaryBackground = new javax.swing.JPanel();
-        menuBar = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(157, 188, 152));
@@ -52,7 +49,7 @@ public class menu extends javax.swing.JFrame {
             }
         });
 
-        favOwnedButton.setText("See Favourited/Owned Stocks");
+        favOwnedButton.setText("See Favourited/Owned Stocks and Add/Claim Holdings");
         favOwnedButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 favOwnedButtonActionPerformed(evt);
@@ -112,14 +109,6 @@ public class menu extends javax.swing.JFrame {
             .addGap(0, 28, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("Owned Stocks");
-        menuBar.add(jMenu1);
-
-        jMenu2.setText("Favourite Stocks");
-        menuBar.add(jMenu2);
-
-        setJMenuBar(menuBar);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,7 +122,7 @@ public class menu extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(mainBackground, javax.swing.GroupLayout.PREFERRED_SIZE, 256, Short.MAX_VALUE)
+                .addComponent(mainBackground, javax.swing.GroupLayout.PREFERRED_SIZE, 279, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(secondaryBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -224,12 +213,9 @@ public class menu extends javax.swing.JFrame {
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton favOwnedButton;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JLabel lblErrorMessage;
     private javax.swing.JLabel lblStockInput;
     private javax.swing.JPanel mainBackground;
-    private javax.swing.JMenuBar menuBar;
     private javax.swing.JPanel secondaryBackground;
     private javax.swing.JComboBox<String> stockTimeInterval;
     private javax.swing.JTextField txtStockInput;

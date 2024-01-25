@@ -15,16 +15,18 @@ public class favouriteowned extends javax.swing.JFrame {
     private double accountHoldings;
     // Constructor for the JFrame
     public favouriteowned(int firstNumber) {
+        initComponents();
+        this.firstNumber = firstNumber;
+        updateAccountHoldings();
+        loadFavoriteOwnedLists();
         // Sort the lists of favourite and owned stocks using quicksort
         Sort.quickSort(favouriteStocks);
         Sort.quickSort(ownedStocks);
         // Set the text of the respective UI components with the sorted stock names
         txtarFav.setText(Sort.buildTextBlock(favouriteStocks));
         txtarOwn.setText(Sort.buildTextBlock(ownedStocks));
+        txtHolding.setText(Double.toString(accountHoldings));
         // Initialize the components of the JFrame
-        initComponents();
-        this.firstNumber = firstNumber;
-        updateAccountHoldings();
     }
 
     @SuppressWarnings("unchecked")
@@ -134,15 +136,15 @@ public class favouriteowned extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtHolding))
                             .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jScrollPane10, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lblFav, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(mainPanelLayout.createSequentialGroup()
-                                            .addComponent(lblAdd)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(txtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(jScrollPane10)
+                                .addGap(0, 50, Short.MAX_VALUE))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(lblFav, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(120, 176, Short.MAX_VALUE))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(lblAdd)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtAdd)))
                         .addGap(30, 30, 30)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(mainPanelLayout.createSequentialGroup()
@@ -231,6 +233,7 @@ public class favouriteowned extends javax.swing.JFrame {
         // Calculate the total funds after adding the entered amount
         accountHoldings = toAdd + accountHoldings;
         saveAccountHoldingsToCSV();
+        txtHolding.setText(Double.toString(accountHoldings));
         lblError.setText("$" + Double.toString(toAdd) + " pending onto your account, bank contacted");    }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnClaimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClaimActionPerformed
@@ -249,6 +252,7 @@ public class favouriteowned extends javax.swing.JFrame {
         // Update the user's balance to the newAcc value (Actual implementation needed here)
         accountHoldings = 0;
         saveAccountHoldingsToCSV();
+        txtHolding.setText(Double.toString(accountHoldings));
     }//GEN-LAST:event_btnClaimActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -262,9 +266,6 @@ public class favouriteowned extends javax.swing.JFrame {
  
     private void loadFavoriteOwnedLists() {
         String filePath = "accounts.csv";
-
-        // Assuming you have variables to hold the current user's account number
-
         StringBuilder favStringBuilder = new StringBuilder();
         StringBuilder ownStringBuilder = new StringBuilder();
 
@@ -273,17 +274,19 @@ public class favouriteowned extends javax.swing.JFrame {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
-                    // Extract the favorite and owned lists
                     String favorites = parts[5].trim();
                     String owned = parts[6].trim();
 
-                    // Append favorites to favStringBuilder
-                    favStringBuilder.append(favorites).append("\n");
+                    // Check if favorites and owned arrays are empty
+                    if (!favorites.isEmpty()) {
+                        favStringBuilder.append("Favorites: ").append(favorites).append("\n");
+                    }
 
-                    // Append owned stocks to ownStringBuilder
-                    ownStringBuilder.append(owned).append("\n");
+                    if (!owned.isEmpty()) {
+                        ownStringBuilder.append("Owned Stocks: ").append(owned).append("\n");
+                    }
 
-                    // You may want to break out of the loop if you've found the user's entry
+                    // Break out of the loop if you've found the user's entry
                     break;
                 }
             }
