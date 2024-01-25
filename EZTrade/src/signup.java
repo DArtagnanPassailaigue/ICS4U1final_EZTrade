@@ -313,7 +313,7 @@ public class signup extends javax.swing.JFrame {
         }
 
         // Write the collected info to the CSV file
-        writeDataToCsv(username, password, cardNum, favourites, owned);
+        writeDataToCsv(username, password, cardNum);
         // Display success message
         lblError.setText("Account created successfully");
     }//GEN-LAST:event_btnCreateActionPerformed
@@ -327,42 +327,10 @@ public class signup extends javax.swing.JFrame {
     private void handleFileError(String errorMessage) {
         lblError.setText(errorMessage);
     }
+
     // Method to write user data to CSV file
-    
-    // Method to write user data to CSV file
-    private void writeDataToCsv(String username, String password, long cardNum, List<String> favourites, List<List<String>> owned) {
+    private void writeDataToCsv(String username, String password, long cardNum) {
         try {
-            // Open the CSV file for reading to get the last line
-            BufferedReader reader = new BufferedReader(new FileReader("accounts.csv"));
-
-            String lastLine = null;
-            String currentLine;
-
-            // Read each line until the end to get the last line
-            while ((currentLine = reader.readLine()) != null) {
-                lastLine = currentLine;
-            }
-
-            reader.close();
-
-            // Extract the leftmost content from the last line
-            long previousNumber = 0;
-
-            if (lastLine != null) {
-                String[] parts = lastLine.split(";");
-                if (parts.length > 0) {
-                    try {
-                        previousNumber = Long.parseLong(parts[0]);
-                    } catch (NumberFormatException e) {
-                        // Handle the exception if parsing fails
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            // Increment the previousNumber by one
-            long newNumber = previousNumber + 1;
-
             // Open the CSV file for writing (append=true to add new entries)
             BufferedWriter writer = new BufferedWriter(new FileWriter("accounts.csv", true));
 
@@ -378,7 +346,7 @@ public class signup extends javax.swing.JFrame {
             }
 
             // Write the newNumber, username, password, and credit card number to the CSV file
-            String lineToAdd = entryNumber + ";" + username + ";" + password + ";" + cardNum + ";0;" + String.join(",", favourites) + ";" + convertOwnedListToString(owned);
+            String lineToAdd = entryNumber + ";" + username + ";" + password + ";" + cardNum;
 
             // Ensure the last entry does not end with a semicolon
             if (lineToAdd.endsWith(";")) {
@@ -394,13 +362,6 @@ public class signup extends javax.swing.JFrame {
             handleFileError("Error reading or writing to CSV file");
             e.printStackTrace(); // Print the stack trace for debugging purposes
         }
-    }
-    
-    private String convertOwnedListToString(List<List<String>> owned) {
-        // Convert the list of lists to a semicolon-separated string
-        return owned.stream()
-                .map(innerList -> String.join(",", innerList))
-                .collect(Collectors.joining(";"));
     }
 
     // Method to get the next entry number
@@ -419,7 +380,6 @@ public class signup extends javax.swing.JFrame {
                 e.printStackTrace(); // Print the stack trace for debugging purposes
             }
         }
-
         // If the file is empty or there's an error, start from 1
         return 1;
     }
