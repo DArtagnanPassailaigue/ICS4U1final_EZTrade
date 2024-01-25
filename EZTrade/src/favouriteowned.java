@@ -283,7 +283,10 @@ public class favouriteowned extends javax.swing.JFrame {
                     }
 
                     if (!owned.isEmpty()) {
-                        ownStringBuilder.append("Owned Stocks: ").append(owned).append("\n");
+                        List<String[]> ownedStocksList = parseOwnedStocks(owned);
+                        // Sort the owned stocks list
+                        Sort.altQuickSort(ownedStocksList);
+                        ownStringBuilder.append(formatOwnedStocks(ownedStocksList)).append("\n");
                     }
 
                     // Break out of the loop if you've found the user's entry
@@ -299,6 +302,35 @@ public class favouriteowned extends javax.swing.JFrame {
         txtarFav.setText(favStringBuilder.toString());
         txtarOwn.setText(ownStringBuilder.toString());
     }
+
+    private List<String[]> parseOwnedStocks(String ownedStocks) {
+        // Parse the ownedStocks string into a list of string arrays
+        List<String[]> ownedStocksList = new ArrayList<>();
+        if (ownedStocks.startsWith("[") && ownedStocks.endsWith("]")) {
+            ownedStocks = ownedStocks.substring(1, ownedStocks.length() - 1); // remove surrounding brackets
+            String[] stockInfoArray = ownedStocks.split(",");
+            for (String stockInfo : stockInfoArray) {
+                String[] stock = stockInfo.split("\\[");
+                if (stock.length == 2) {
+                    ownedStocksList.add(new String[]{stock[0], stock[1].replace("]", "")});
+                }
+            }
+        }
+        return ownedStocksList;
+    }
+    
+    private String formatOwnedStocks(List<String[]> ownedStocksList) {
+        // Format the ownedStocks list into the desired string format
+        StringBuilder formattedOwnedStocks = new StringBuilder();
+        for (String[] stockInfo : ownedStocksList) {
+            formattedOwnedStocks.append(stockInfo[0]).append("[").append(stockInfo[1]).append("], ");
+        }
+        if (formattedOwnedStocks.length() > 1) {
+            formattedOwnedStocks.deleteCharAt(formattedOwnedStocks.length() - 1); // remove trailing comma
+        }
+        return formattedOwnedStocks.toString();
+    }
+
 
     private List<String> parseFavorites(String favorites) {
         // Parse the favorites string into a list
