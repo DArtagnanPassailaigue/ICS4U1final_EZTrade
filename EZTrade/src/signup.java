@@ -420,7 +420,7 @@ public class signup extends javax.swing.JFrame {
             try (BufferedReader reader = new BufferedReader(new FileReader(filePath.toFile()))) {
                 return reader.lines().anyMatch(line -> {
                     String[] parts = line.split(",");
-                    return parts.length > 0 && parts[0].equals(newUsername);
+                    return parts.length > 0 && parts[1].equals(newUsername);
                 });
             }
         }
