@@ -235,29 +235,39 @@ public class stockinfo extends javax.swing.JFrame {
 
     private void btnSellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSellActionPerformed
         // Retrieve the average opening stock price for the selected stock.
-        double stockCost = avgOpen;
+        double stockCost = avgOpen; // You may need to adjust this based on your application logic.
 
-        // Assuming the user owns a fixed amount of the given stock, specify the owned stock amount.
-        int ownedStockAmount = 2;
-        String stockKey = symbol;
+        // Declare variables to store the user's input.
+        int stockAmount;
+        String stockKey = symbol; // You need to set this to the symbol of the stock being sold.
 
-        // Calculate the total amount from selling the owned stock.
-        double sellTotal = stockCost * ownedStockAmount;
+        try {
+            // Attempt to convert the text entered in the "Amount" field to an integer.
+            stockAmount = Integer.parseInt(txtAmount.getText());
+        } catch (NumberFormatException e) {
+            // Handle the case where the input is not a valid integer.
+            lblError.setText("Please enter a valid amount of shares to sell.");
+            return; // Exit the method to prevent further execution.
+        }
 
-        // Increase the account holdings by the sell total.
-        accountHoldings = accountHoldings + sellTotal;
+        // Calculate the total earnings from selling the specified amount of stocks.
+        double sellTotal = stockCost * stockAmount; // You may need to adjust this based on your application logic.
+
+        // Add the earnings from selling the stock to the user's account holdings.
+        accountHoldings += sellTotal;
+
+        // Update the error label to indicate a successful sale and display the stock symbol.
+        lblError.setText("Shares sold successfully, " + stockKey + " removed from owned stocks");
 
         // Update the displayed account balance after the sale.
         txtAccount.setText("$" + String.format("%.2f", accountHoldings));
 
-        // Remove the stock from the user's owned 2D list.
-        removeStockFromOwnedList(stockKey);
-
         // Save the updated account holdings and stock information to the CSV file.
         saveAccountHoldingsToCSV();
 
-        // Update the error label to indicate a successful sale and display the stock symbol.
-        lblError.setText("Shares sold successfully, " + stockKey + " removed from owned stocks");    }//GEN-LAST:event_btnSellActionPerformed
+        // Remove the sold stock from the list of owned stocks in the CSV file.
+        removeStockFromOwnedList(stockKey, stockAmount);    
+    }//GEN-LAST:event_btnSellActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         menu m = new menu(firstNumber);
@@ -487,7 +497,7 @@ public class stockinfo extends javax.swing.JFrame {
     }
 
     
-    private void removeStockFromOwnedList(String stockKey) {
+    private void removeStockFromOwnedList(String stockKey, int stockAmount) {
         String filePath = "accounts.csv";
         List<String> lines = new ArrayList<>();
 
@@ -498,25 +508,26 @@ public class stockinfo extends javax.swing.JFrame {
                 if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
                     // Update the 2D list in the 7th column
                     String ownedStocks = parts[6].trim();
-                    List<String> updatedStocks = new ArrayList<>();
+                    List<String[]> ownedStocksList = parseOwnedStocks(ownedStocks);
 
-                    for (String stock : ownedStocks.split(";")) {
-                        String[] stockInfo = stock.split("\\[");
-                        if (stockInfo.length > 0 && !stockInfo[0].equals(stockKey)) {
-                            updatedStocks.add(stock);
+                    for (int i = 0; i < ownedStocksList.size(); i++) {
+                        String[] stockInfo = ownedStocksList.get(i);
+                        if (stockInfo.length > 0 && stockInfo[0].equals(stockKey)) {
+                            // Update the number of owned shares
+                            int currentShares = Integer.parseInt(stockInfo[1]);
+                            currentShares -= stockAmount;
+                            if (currentShares <= 0) {
+                                // If the number of shares becomes zero or negative, remove the stock from the list
+                                ownedStocksList.remove(i);
+                            } else {
+                                // Otherwise, update the number of shares
+                                ownedStocksList.get(i)[1] = Integer.toString(currentShares);
+                            }
+                            break;
                         }
                     }
 
-                    // Update the ownedStocks with the modified list
-                    StringBuilder updatedStocksStr = new StringBuilder();
-                    for (String updatedStock : updatedStocks) {
-                        updatedStocksStr.append(updatedStock).append(";");
-                    }
-                    if (updatedStocksStr.length() > 0) {
-                        updatedStocksStr.deleteCharAt(updatedStocksStr.length() - 1); // remove trailing semicolon
-                    }
-
-                    parts[6] = updatedStocksStr.toString();
+                    parts[6] = formatOwnedStocks(ownedStocksList);
                     line = String.join(";", parts);
                 }
                 lines.add(line);
