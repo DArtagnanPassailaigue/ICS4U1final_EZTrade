@@ -8,6 +8,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 public class signup extends javax.swing.JFrame {
     public List<String> favourites = new ArrayList<>();
@@ -311,7 +313,7 @@ public class signup extends javax.swing.JFrame {
         }
 
         // Write the collected info to the CSV file
-        writeDataToCsv(username, password, cardNum, favourites, owned);
+        writeDataToCsv(username, password, cardNum);
         // Display success message
         lblError.setText("Account created successfully");
     }//GEN-LAST:event_btnCreateActionPerformed
@@ -325,41 +327,10 @@ public class signup extends javax.swing.JFrame {
     private void handleFileError(String errorMessage) {
         lblError.setText(errorMessage);
     }
+
     // Method to write user data to CSV file
-    
-    private void writeDataToCsv(String username, String password, long cardNum, List<String> favourites, List<List<String>> owned) {
+    private void writeDataToCsv(String username, String password, long cardNum) {
         try {
-            // Open the CSV file for reading to get the last line
-            BufferedReader reader = new BufferedReader(new FileReader("accounts.csv"));
-
-            String lastLine = null;
-            String currentLine;
-            
-            // Read each line until the end to get the last line
-            while ((currentLine = reader.readLine()) != null) {
-                lastLine = currentLine;
-            }
-
-            reader.close();
-
-            // Extract the leftmost content from the last line
-            long previousNumber = 0;
-
-            if (lastLine != null) {
-                String[] parts = lastLine.split(";");
-                if (parts.length > 0) {
-                    try {
-                        previousNumber = Long.parseLong(parts[0]);
-                    } catch (NumberFormatException e) {
-                        // Handle the exception if parsing fails
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            // Increment the previousNumber by one
-            long newNumber = previousNumber + 1;
-
             // Open the CSV file for writing (append=true to add new entries)
             BufferedWriter writer = new BufferedWriter(new FileWriter("accounts.csv", true));
 
@@ -375,7 +346,14 @@ public class signup extends javax.swing.JFrame {
             }
 
             // Write the newNumber, username, password, and credit card number to the CSV file
-            writer.write(entryNumber + ";" + username + ";" + password + ";" + cardNum + ";" + "0" + ";" + favourites + ";" + owned);
+            String lineToAdd = entryNumber + ";" + username + ";" + password + ";" + cardNum;
+
+            // Ensure the last entry does not end with a semicolon
+            if (lineToAdd.endsWith(";")) {
+                lineToAdd = lineToAdd.substring(0, lineToAdd.length() - 1);
+            }
+
+            writer.write(lineToAdd);
 
             // Close the writer to release resources
             writer.close();
@@ -386,47 +364,41 @@ public class signup extends javax.swing.JFrame {
         }
     }
 
+    // Method to get the next entry number
     private int getNextEntryNumber(boolean fileIsEmpty) {
         // Read the last entry number from the file and increment it
         if (!fileIsEmpty) {
             try (BufferedReader reader = new BufferedReader(new FileReader("accounts.csv"))) {
-                String lastLine = null;
-                String currentLine;
+                // Read all lines to get the count
+                long count = reader.lines().count();
 
-                while ((currentLine = reader.readLine()) != null) {
-                    lastLine = currentLine;
-                }
-
-                if (lastLine != null) {
-                    String[] parts = lastLine.split(";");
-                    if (parts.length > 0) {
-                        return Integer.parseInt(parts[0]) + 1;
-                    }
+                // If the count is greater than 0, return the count + 1
+                if (count > 0) {
+                    return (int) (count);
                 }
             } catch (IOException | NumberFormatException e) {
                 e.printStackTrace(); // Print the stack trace for debugging purposes
             }
         }
-
         // If the file is empty or there's an error, start from 1
         return 1;
     }
 
-
+    // Method to check if the username already exists in the CSV file
     private boolean isUsernameExists(String newUsername) throws IOException {
         // Check if the username already exists in the CSV file
         Path filePath = Paths.get("accounts.csv");
         if (Files.exists(filePath) && Files.size(filePath) > 0) {
             try (BufferedReader reader = new BufferedReader(new FileReader(filePath.toFile()))) {
+                // Check if any line contains the specified username
                 return reader.lines().anyMatch(line -> {
                     String[] parts = line.split(";");
-                    return parts.length > 0 && parts[1].equals(newUsername);
+                    return parts.length >= 2 && parts[1].equals(newUsername);
                 });
             }
         }
         return false;
     }
-    
     
     
     public static void main(String args[]) {

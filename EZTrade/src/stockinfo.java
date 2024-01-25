@@ -651,10 +651,10 @@ public class stockinfo extends javax.swing.JFrame {
         // Check if "Time Series" exists for daily, weekly, or monthly
         if (jsonObject.containsKey("Time Series (Daily)")) {
             return "Time Series (Daily)";
-        } else if (jsonObject.containsKey("Weekly Time Series")) {
-            return "Weekly Time Series";
-        } else if (jsonObject.containsKey("Monthly Time Series")) {
-            return "Monthly Time Series";
+        } else if (jsonObject.containsKey("Time Series (Weekly)")) {
+            return "Time Series (Weekly)";
+        } else if (jsonObject.containsKey("Time Series (Monthly)")) {
+            return "Time Series (Monthly)";
         }
         return null;
     }

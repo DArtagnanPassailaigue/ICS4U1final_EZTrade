@@ -12,8 +12,8 @@ public class login_class {
 
             // Iterate through each subsequent line in the file
             while ((line = reader.readLine()) != null) {
-                // Split the line into parts using a comma as the delimiter
-                String[] parts = line.split(",");
+                // Split the line into parts using a semicolon as the delimiter
+                String[] parts = line.split(";");
                 // Check if the line contains three parts (username, password, and additional info)
                 if (parts.length >= 3) {
                     // Extract stored username and password from the parts array
