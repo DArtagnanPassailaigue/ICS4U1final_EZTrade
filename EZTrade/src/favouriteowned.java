@@ -22,9 +22,6 @@ public class favouriteowned extends javax.swing.JFrame {
         // Sort the lists of favourite and owned stocks using quicksort
         Sort.quickSort(favouriteStocks);
         Sort.quickSort(ownedStocks);
-        // Set the text of the respective UI components with the sorted stock names
-        txtarFav.setText(Sort.buildTextBlock(favouriteStocks));
-        txtarOwn.setText(Sort.buildTextBlock(ownedStocks));
         txtHolding.setText(Double.toString(accountHoldings));
         // Initialize the components of the JFrame
     }
@@ -279,7 +276,10 @@ public class favouriteowned extends javax.swing.JFrame {
 
                     // Check if favorites and owned arrays are empty
                     if (!favorites.isEmpty()) {
-                        favStringBuilder.append("Favorites: ").append(favorites).append("\n");
+                        List<String> favoritesList = parseFavorites(favorites);
+                        // Sort the favorites list
+                        Sort.quickSort(favoritesList);
+                        favStringBuilder.append(String.join(", ", favoritesList)).append("\n");
                     }
 
                     if (!owned.isEmpty()) {
@@ -298,6 +298,12 @@ public class favouriteowned extends javax.swing.JFrame {
         // Set the text of the JTextArea components
         txtarFav.setText(favStringBuilder.toString());
         txtarOwn.setText(ownStringBuilder.toString());
+    }
+
+    private List<String> parseFavorites(String favorites) {
+        // Parse the favorites string into a list
+        favorites = favorites.substring(1, favorites.length() - 1); // remove surrounding brackets
+        return new ArrayList<>(Arrays.asList(favorites.split(",")));
     }
     
     private void updateAccountHoldings() {
