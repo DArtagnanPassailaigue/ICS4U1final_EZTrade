@@ -272,7 +272,7 @@ public class favouriteowned extends javax.swing.JFrame {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
+                String[] parts = line.split(";");
                 if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
                     String favorites = parts[5].trim();
                     String owned = parts[6].trim();
@@ -309,7 +309,7 @@ public class favouriteowned extends javax.swing.JFrame {
             // Iterate through each line in the file
             while ((line = reader.readLine()) != null) {
                 // Split the line into parts using a comma as the delimiter
-                String[] parts = line.split(",");
+                String[] parts = line.split(";");
                 // Check if the line contains the user's account number
                 if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
                     // Extract and update the accountHoldings variable
@@ -333,11 +333,11 @@ public class favouriteowned extends javax.swing.JFrame {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
+                String[] parts = line.split(";");
                 if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
                     // Modify the accountHoldings value in the line
                     parts[4] = Double.toString(accountHoldings);
-                    line = String.join(",", parts);
+                    line = String.join(";", parts);
                 }
                 lines.add(line);
             }

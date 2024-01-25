@@ -346,7 +346,7 @@ public class signup extends javax.swing.JFrame {
             long previousNumber = 0;
 
             if (lastLine != null) {
-                String[] parts = lastLine.split(",");
+                String[] parts = lastLine.split(";");
                 if (parts.length > 0) {
                     try {
                         previousNumber = Long.parseLong(parts[0]);
@@ -375,7 +375,7 @@ public class signup extends javax.swing.JFrame {
             }
 
             // Write the newNumber, username, password, and credit card number to the CSV file
-            writer.write(entryNumber + "," + username + "," + password + "," + cardNum + "," + "0" + "," + favourites + "," + owned);
+            writer.write(entryNumber + ";" + username + ";" + password + ";" + cardNum + ";" + "0" + ";" + favourites + ";" + owned);
 
             // Close the writer to release resources
             writer.close();
@@ -398,7 +398,7 @@ public class signup extends javax.swing.JFrame {
                 }
 
                 if (lastLine != null) {
-                    String[] parts = lastLine.split(",");
+                    String[] parts = lastLine.split(";");
                     if (parts.length > 0) {
                         return Integer.parseInt(parts[0]) + 1;
                     }
@@ -419,7 +419,7 @@ public class signup extends javax.swing.JFrame {
         if (Files.exists(filePath) && Files.size(filePath) > 0) {
             try (BufferedReader reader = new BufferedReader(new FileReader(filePath.toFile()))) {
                 return reader.lines().anyMatch(line -> {
-                    String[] parts = line.split(",");
+                    String[] parts = line.split(";");
                     return parts.length > 0 && parts[1].equals(newUsername);
                 });
             }

@@ -280,7 +280,7 @@ public class stockinfo extends javax.swing.JFrame {
             // Iterate through each line in the file
             while ((line = reader.readLine()) != null) {
                 // Split the line into parts using a comma as the delimiter
-                String[] parts = line.split(",");
+                String[] parts = line.split(";");
                 // Check if the line contains the user's account number
                 if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
                     // Extract and update the accountHoldings variable
@@ -304,11 +304,11 @@ public class stockinfo extends javax.swing.JFrame {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
+                String[] parts = line.split(";");
                 if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
                     // Modify the accountHoldings value in the line
                     parts[4] = Double.toString(accountHoldings);
-                    line = String.join(",", parts);
+                    line = String.join(";", parts);
                 }
                 lines.add(line);
             }
@@ -336,18 +336,17 @@ public class stockinfo extends javax.swing.JFrame {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
+                String[] parts = line.split(";");
                 if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
                     // Check if the stockKey is already in the favorites list
                     String favorites = parts[5].trim();
-                    if (favorites.isEmpty() || !favorites.contains(stockKey)) {
+                    List<String> favoritesList = new ArrayList<>(Arrays.asList(favorites.split(";")));
+
+                    if (!favoritesList.contains(stockKey)) {
                         // Stock symbol not found, add it to favorites
-                        if (!favorites.isEmpty()) {
-                            favorites += ","; // Add a comma if the favorites list is not empty
-                        }
-                        favorites += stockKey;
-                        parts[5] = favorites;
-                        line = String.join(",", parts);
+                        favoritesList.add(stockKey);
+                        parts[5] = String.join(";", favoritesList);
+                        line = String.join(";", parts);
                     } else {
                         // Stock symbol is already in favorites, return without adding it again
                         lblError.setText(stockKey + " is already in favorite stocks");
@@ -375,6 +374,7 @@ public class stockinfo extends javax.swing.JFrame {
         lblError.setText(stockKey + " added to favorite stocks");
     }
 
+
     // Method to update the 2D list in the 7th column of the CSV file
     private void updateOwnedStocks(String stockKey, int stockAmount) {
         String filePath = "accounts.csv";
@@ -383,7 +383,7 @@ public class stockinfo extends javax.swing.JFrame {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
+                String[] parts = line.split(";");
                 if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
                     // Update the 2D list in the 7th column
                     String ownedStocks = parts[6].trim();
@@ -411,7 +411,7 @@ public class stockinfo extends javax.swing.JFrame {
                     }
 
                     parts[6] = ownedStocks;
-                    line = String.join(",", parts);
+                    line = String.join(";", parts);
                 }
                 lines.add(line);
             }
@@ -439,7 +439,7 @@ public class stockinfo extends javax.swing.JFrame {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
+                String[] parts = line.split(";");
                 if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
                     // Update the 2D list in the 7th column
                     String ownedStocks = parts[6].trim();
@@ -454,7 +454,7 @@ public class stockinfo extends javax.swing.JFrame {
 
                     // Update the ownedStocks with the modified list
                     parts[6] = String.join(";", updatedStocks);
-                    line = String.join(",", parts);
+                    line = String.join(";", parts);
                 }
                 lines.add(line);
             }
