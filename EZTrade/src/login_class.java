@@ -7,7 +7,10 @@ public class login_class {
     public static String login(String username, String password, String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            // Iterate through each line in the file
+            // Skip the first line (header) of the file
+            reader.readLine();
+
+            // Iterate through each subsequent line in the file
             while ((line = reader.readLine()) != null) {
                 // Split the line into parts using a comma as the delimiter
                 String[] parts = line.split(",");
