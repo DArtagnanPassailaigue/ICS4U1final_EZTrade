@@ -93,5 +93,4 @@ public class sign_up {
             return false;
         }
     }
-
 }
