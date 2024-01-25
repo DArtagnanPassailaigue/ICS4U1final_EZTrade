@@ -198,7 +198,8 @@ public class stockinfo extends javax.swing.JFrame {
         // Declare variables to store the user's input.
         int stockAmount;
         String stockKey = symbol;
-        try { 
+
+        try {
             // Attempt to convert the text entered in the "Amount" field to an integer.
             stockAmount = Integer.parseInt(txtAmount.getText());
         } catch (NumberFormatException e) {
@@ -206,32 +207,56 @@ public class stockinfo extends javax.swing.JFrame {
             lblError.setText("Please enter a valid amount of shares to buy.");
             return; // Exit the method to prevent further execution.
         }
+
         // Calculate the total cost of purchasing the specified amount of stocks.
         double purchaseTotal = stockCost * stockAmount;
+
         // Check if the user has sufficient funds to make the purchase.
-        if (purchaseTotal > accountHoldings){
-            lblError.setText("Insufficcient Funds");
+        if (purchaseTotal > accountHoldings) {
+            lblError.setText("Insufficient Funds");
             return; // Exit the method if funds are insufficient.
         }
+
         // Deduct the purchase amount from the user's account holdings.
         accountHoldings = accountHoldings - purchaseTotal;
+
         // Update the error label to indicate a successful purchase and display the stock symbol.
         lblError.setText("Shares bought successfully, " + stockKey + " added to owned stocks");
+
         // Update the displayed account balance after the purchase.
         txtAccount.setText("$" + String.format("%.2f", accountHoldings));
+
+        // Add or update the stock in the 2D list in the 7th column of the CSV file
+        updateOwnedStocks(stockKey, stockAmount);
+
+        // Save the updated account holdings and stock information to the CSV file
         saveAccountHoldingsToCSV();
     }//GEN-LAST:event_btnPurchaseActionPerformed
 
     private void btnSellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSellActionPerformed
         // Retrieve the average opening stock price for the selected stock.
         double stockCost = avgOpen; // TODO: pull the stock cost from the stock file
+
         // Assuming the user owns a fixed amount of the given stock, specify the owned stock amount.
-        int ownedStockAmount = 2; // pull the amount of the given stock owned by the user from the user account file
+        int ownedStockAmount = 2; // TODO: pull the amount of the given stock owned by the user from the user account file
         String stockKey = symbol;
+
+        // Calculate the total amount from selling the owned stock.
         double sellTotal = stockCost * ownedStockAmount;
+
+        // Increase the account holdings by the sell total.
         accountHoldings = accountHoldings + sellTotal;
+
+        // Update the displayed account balance after the sale.
         txtAccount.setText("$" + String.format("%.2f", accountHoldings));
+
+        // Remove the stock from the user's owned 2D list.
+        removeStockFromOwnedList(stockKey);
+
+        // Save the updated account holdings and stock information to the CSV file.
         saveAccountHoldingsToCSV();
+
+        // Update the error label to indicate a successful sale and display the stock symbol.
         lblError.setText("Shares sold successfully, " + stockKey + " removed from owned stocks");    }//GEN-LAST:event_btnSellActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -243,7 +268,7 @@ public class stockinfo extends javax.swing.JFrame {
     private void btnFavouriteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFavouriteActionPerformed
         // add stock key to favourited stocks in account file
         String stockKey = symbol;
-        lblError.setText(stockKey + " added to favourite stocks");
+        addStockToFavorites(stockKey);
     }//GEN-LAST:event_btnFavouriteActionPerformed
 
     private void updateAccountHoldings() {
@@ -283,6 +308,152 @@ public class stockinfo extends javax.swing.JFrame {
                 if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
                     // Modify the accountHoldings value in the line
                     parts[4] = Double.toString(accountHoldings);
+                    line = String.join(",", parts);
+                }
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the IOException appropriately (log, show error message, etc.)
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            // Write the updated content back to the file
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the IOException appropriately (log, show error message, etc.)
+        }
+    }
+    
+    private void addStockToFavorites(String stockKey) {
+        String filePath = "accounts.csv";
+        List<String> lines = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
+                    // Check if the stockKey is already in the favorites list
+                    String favorites = parts[5].trim();
+                    if (favorites.isEmpty() || !favorites.contains(stockKey)) {
+                        // Stock symbol not found, add it to favorites
+                        if (!favorites.isEmpty()) {
+                            favorites += ","; // Add a comma if the favorites list is not empty
+                        }
+                        favorites += stockKey;
+                        parts[5] = favorites;
+                        line = String.join(",", parts);
+                    } else {
+                        // Stock symbol is already in favorites, return without adding it again
+                        lblError.setText(stockKey + " is already in favorite stocks");
+                        return;
+                    }
+                }
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the IOException appropriately (log, show error message, etc.)
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            // Write the updated content back to the file
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the IOException appropriately (log, show error message, etc.)
+        }
+
+        lblError.setText(stockKey + " added to favorite stocks");
+    }
+
+    // Method to update the 2D list in the 7th column of the CSV file
+    private void updateOwnedStocks(String stockKey, int stockAmount) {
+        String filePath = "accounts.csv";
+        List<String> lines = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
+                    // Update the 2D list in the 7th column
+                    String ownedStocks = parts[6].trim();
+                    if (!ownedStocks.isEmpty()) {
+                        ownedStocks += ";"; // Add a semicolon if the ownedStocks list is not empty
+                    }
+
+                    // Check if the stockKey is already in the ownedStocks list
+                    boolean stockAlreadyOwned = false;
+                    for (String stock : ownedStocks.split(";")) {
+                        String[] stockInfo = stock.split("\\[");
+                        if (stockInfo.length > 0 && stockInfo[0].equals(stockKey)) {
+                            stockAlreadyOwned = true;
+                            // Update the number of owned shares
+                            int currentShares = Integer.parseInt(stockInfo[1].replace("]", ""));
+                            currentShares += stockAmount;
+                            stock = stockKey + "[" + currentShares + "]";
+                            break;
+                        }
+                    }
+
+                    if (!stockAlreadyOwned) {
+                        // Stock symbol not found, add it to ownedStocks
+                        ownedStocks += stockKey + "[" + stockAmount + "]";
+                    }
+
+                    parts[6] = ownedStocks;
+                    line = String.join(",", parts);
+                }
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the IOException appropriately (log, show error message, etc.)
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            // Write the updated content back to the file
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the IOException appropriately (log, show error message, etc.)
+        }
+    }
+    
+    private void removeStockFromOwnedList(String stockKey) {
+        String filePath = "accounts.csv";
+        List<String> lines = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
+                    // Update the 2D list in the 7th column
+                    String ownedStocks = parts[6].trim();
+                    List<String> updatedStocks = new ArrayList<>();
+
+                    for (String stock : ownedStocks.split(";")) {
+                        String[] stockInfo = stock.split("\\[");
+                        if (stockInfo.length > 0 && !stockInfo[0].equals(stockKey)) {
+                            updatedStocks.add(stock);
+                        }
+                    }
+
+                    // Update the ownedStocks with the modified list
+                    parts[6] = String.join(";", updatedStocks);
                     line = String.join(",", parts);
                 }
                 lines.add(line);

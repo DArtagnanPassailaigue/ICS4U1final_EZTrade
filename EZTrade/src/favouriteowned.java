@@ -260,6 +260,43 @@ public class favouriteowned extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
  
+    private void loadFavoriteOwnedLists() {
+        String filePath = "accounts.csv";
+
+        // Assuming you have variables to hold the current user's account number
+
+        StringBuilder favStringBuilder = new StringBuilder();
+        StringBuilder ownStringBuilder = new StringBuilder();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 7 && Integer.parseInt(parts[0].trim()) == firstNumber) {
+                    // Extract the favorite and owned lists
+                    String favorites = parts[5].trim();
+                    String owned = parts[6].trim();
+
+                    // Append favorites to favStringBuilder
+                    favStringBuilder.append(favorites).append("\n");
+
+                    // Append owned stocks to ownStringBuilder
+                    ownStringBuilder.append(owned).append("\n");
+
+                    // You may want to break out of the loop if you've found the user's entry
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the IOException appropriately (log, show error message, etc.)
+        }
+
+        // Set the text of the JTextArea components
+        txtarFav.setText(favStringBuilder.toString());
+        txtarOwn.setText(ownStringBuilder.toString());
+    }
+    
     private void updateAccountHoldings() {
         // Specify the file path for user accounts data (CSV file)
         String filePath = "accounts.csv";
