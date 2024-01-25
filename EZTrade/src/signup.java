@@ -346,7 +346,7 @@ public class signup extends javax.swing.JFrame {
             }
 
             // Write the newNumber, username, password, and credit card number to the CSV file
-            String lineToAdd = entryNumber + ";" + username + ";" + password + ";" + cardNum;
+            String lineToAdd = entryNumber + ";" + username + ";" + password + ";" + cardNum + ";" + 0 + ";" + "[]" + ";" + "[]";
 
             // Ensure the last entry does not end with a semicolon
             if (lineToAdd.endsWith(";")) {
